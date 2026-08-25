@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { ProgressDots } from "@/components/ui/ProgressDots";
+import { StepBar } from "@/components/ui/StepBar";
 import { VelpayLogo } from "@/components/ui/VelpayLogo";
 import { TOTAL_STEPS } from "@/lib/flow";
 import { SplitLayout } from "../SplitLayout";
@@ -29,7 +29,7 @@ export function Welcome() {
         title="Vamos a registrar tu negocio"
         subtitle="Necesitaremos algunos datos y documentos para completar tu solicitud. El proceso tomará menos de 10 minutos."
       />
-      <ProgressDots current={1} total={TOTAL_STEPS} />
+      <StepBar current={1} total={TOTAL_STEPS} />
     </SplitLayout>
   );
 }

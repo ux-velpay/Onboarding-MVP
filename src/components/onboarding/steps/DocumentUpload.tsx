@@ -18,6 +18,7 @@ export function DocumentUpload() {
   const { next } = useOnboarding();
   return (
     <SplitLayout
+      align="start"
       header={<WizardHeader step={7} rightLabel="Subiendo Documentos" />}
       footer={
         <Button fullWidth onClick={next}>
@@ -26,8 +27,8 @@ export function DocumentUpload() {
       }
     >
       <StepTitle
-        title="Sube tu identificación oficial"
-        subtitle="Asegúrate de que la identificación oficial (INE o Pasaporte) cumpla con:"
+        title="Sube tu identificación oficial (INE)"
+        subtitle="Necesitamos ambos lados de tu INE. Asegúrate de que cada imagen cumpla con:"
       />
       <ul className="mb-6 space-y-3">
         {REQUIREMENTS.map((t) => (
@@ -39,7 +40,16 @@ export function DocumentUpload() {
           </li>
         ))}
       </ul>
-      <UploadDropzone />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <p className="mb-2 text-[14px] font-medium text-ink">INE — Frente</p>
+          <UploadDropzone />
+        </div>
+        <div>
+          <p className="mb-2 text-[14px] font-medium text-ink">INE — Reverso</p>
+          <UploadDropzone />
+        </div>
+      </div>
     </SplitLayout>
   );
 }

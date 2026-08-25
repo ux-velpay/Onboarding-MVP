@@ -3,7 +3,7 @@
 import { cn } from "@/lib/cn";
 import { stepNumber, TOTAL_STEPS } from "@/lib/flow";
 import { ArrowLeft } from "@/components/ui/icons";
-import { ProgressDots } from "@/components/ui/ProgressDots";
+import { StepBar } from "@/components/ui/StepBar";
 import { useOnboarding } from "./provider";
 
 interface WizardHeaderProps {
@@ -40,7 +40,7 @@ export function WizardHeader({ step, rightLabel }: WizardHeaderProps) {
       </div>
       {current && (
         <div className="mt-4">
-          <ProgressDots current={current} total={TOTAL_STEPS} />
+          <StepBar current={current} total={TOTAL_STEPS} />
         </div>
       )}
     </div>

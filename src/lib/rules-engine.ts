@@ -93,14 +93,6 @@ export function buildRequirements(data: OnboardingData): Requirement[] {
       status: "pending",
     },
     {
-      id: "estado_cuenta",
-      label: "Estado de cuenta bancario",
-      hint: "Debe mostrar el nombre del comercio.",
-      rule: "BR-017",
-      kind: "upload",
-      status: "pending",
-    },
-    {
       id: "contrato_subafiliado",
       label: "Contrato de sub-afiliado",
       hint: "Con firma autógrafa o digital.",
