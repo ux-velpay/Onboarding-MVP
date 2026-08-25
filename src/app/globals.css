@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/* ============================================================
+   VelPay Design Tokens  (source: velpay-design-system / Foundations)
+   Semantic layer flattened to CSS custom properties + Tailwind theme.
+   ============================================================ */
+@theme {
+  --font-sans: var(--font-work-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+
+  /* Brand purple */
+  --color-primary: #754bf1;        /* action.primary        */
+  --color-primary-hover: #6844d4;  /* action.primary-hover  */
+  --color-primary-dark: #2d006d;   /* headings / secondary  */
+  --color-purple-50: #f4f3ff;
+  --color-purple-100: #e8e3fb;
+  --color-purple-200: #d1c7f6;
+  --color-purple-300: #b5a4f0;
+  --color-purple-400: #9179ea;
+
+  /* Ink / neutrals */
+  --color-ink: #111827;            /* text.primary   */
+  --color-ink-2: #374151;          /* text.secondary */
+  --color-ink-3: #6b7280;          /* muted / helper */
+  --color-placeholder: #9aa1ac;
+  --color-line: #e5e7eb;           /* border.default */
+  --color-line-strong: #d0d5dd;    /* border.strong  */
+  --color-page: #f9fafb;           /* bg.page        */
+  --color-surface: #f3f4f6;        /* bg.surface     */
+  --color-muted: #f9fafb;
+
+  /* Status */
+  --color-success: #027a48;
+  --color-success-bg: #e8fff4;
+  --color-danger: #991f1f;
+  --color-danger-bg: #ffdfdf;
+  --color-warning: #8a6500;
+  --color-warning-bg: #fff7e0;
+  --color-alert: #c2410c;
+  --color-alert-bg: #fff1e8;
+  --color-info: #2d006d;
+  --color-info-bg: #f4f3ff;
+  --color-teal: #12b3b3;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+
+  /* Shadows */
+  --shadow-card: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.04), 0 16px 40px rgba(0, 0, 0, 0.1);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+}
+
+/* The VelPay brand gradient used on the right panel of the split layout. */
+.velpay-gradient {
+  background-color: #4a1d9e;
+  background-image:
+    radial-gradient(115% 90% at 100% 52%, rgba(150, 178, 255, 0.55), transparent 46%),
+    radial-gradient(120% 120% at 2% 0%, #9179ea 0%, rgba(145, 121, 234, 0) 55%),
+    radial-gradient(140% 120% at 50% 108%, #2d006d 0%, rgba(45, 0, 109, 0) 60%),
+    linear-gradient(152deg, #7e5fe6 0%, #4a1d9e 46%, #2d006d 100%);
+}
+
+/* Focus ring shared across interactive controls */
+.focus-ring:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(117, 75, 241, 0.2);
+}
+
+@keyframes velpay-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-step {
+  animation: velpay-fade-up 0.28s var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-step {
+    animation: none;
+  }
+}
