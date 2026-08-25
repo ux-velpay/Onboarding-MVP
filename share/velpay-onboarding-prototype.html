@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VelPay · Onboarding Nivel 0 (Prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#754bf1; --primary-hover:#6844d4; --primary-dark:#2d006d;
+  --purple-50:#f4f3ff; --purple-200:#d1c7f6;
+  --ink:#111827; --ink-2:#374151; --ink-3:#6b7280; --placeholder:#9aa1ac;
+  --line:#e5e7eb; --line-strong:#d0d5dd; --page:#f9fafb; --surface:#f3f4f6;
+  --success:#027a48; --success-bg:#e8fff4; --danger:#991f1f; --danger-bg:#ffdfdf;
+  --alert:#c2410c; --alert-bg:#fff1e8; --teal:#12b3b3;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:"Work Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--page);-webkit-font-smoothing:antialiased}
+svg{display:block}
+.velpay-gradient{
+  background-color:#4a1d9e;
+  background-image:
+    radial-gradient(115% 90% at 100% 52%, rgba(150,178,255,.55), transparent 46%),
+    radial-gradient(120% 120% at 2% 0%, #9179ea 0%, rgba(145,121,234,0) 55%),
+    radial-gradient(140% 120% at 50% 108%, #2d006d 0%, rgba(45,0,109,0) 60%),
+    linear-gradient(152deg,#7e5fe6 0%,#4a1d9e 46%,#2d006d 100%);
+}
+/* layout */
+.split{display:flex;min-height:100vh;background:#fff}
+.left{display:flex;flex-direction:column;width:100%;padding:40px 24px}
+.col{display:flex;flex-direction:column;flex:1;width:100%;max-width:600px;margin:0 auto}
+.content{display:flex;flex-direction:column;flex:1;justify-content:center;padding:32px 0}
+.content.start{justify-content:flex-start}
+.foot{flex-shrink:0}
+.gradient{display:none;position:relative;width:50%;flex-shrink:0}
+.gradient .tag{display:flex;align-items:flex-start;justify-content:center;width:100%;height:100%;padding:0 64px;padding-top:24vh}
+.gradient .tag p{max-width:440px;text-align:center;font-size:18px;line-height:1.625;color:rgba(255,255,255,.9)}
+@media(min-width:1024px){.left{width:50%;padding:40px 72px}.gradient{display:flex}}
+.centered{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--page);padding:48px 24px}
+.card{width:100%;max-width:520px;border:1px solid var(--line);background:#fff;border-radius:20px;padding:40px 48px;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08)}
+/* header */
+.whead{display:flex;flex-direction:column}
+.wtop{display:flex;align-items:center;justify-content:space-between}
+.back{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:var(--primary-dark);background:none;border:none;cursor:pointer}
+.back:disabled{opacity:.4;cursor:default}
+.back .circle{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:999px;background:var(--primary-dark);color:#fff}
+.steplabel{font-size:14px;color:var(--ink-3)}
+.dots{display:flex;align-items:center;gap:8px;margin-top:16px}
+.dot{height:7px;width:7px;border-radius:999px;background:var(--purple-200);transition:all .2s}
+.dot.done{background:var(--primary-dark)}
+.dot.current{width:24px;background:var(--primary-dark)}
+/* progress bar header */
+.pbar-top{display:flex;align-items:center;justify-content:space-between}
+.pbar-top .l{font-size:15px;font-weight:600;color:var(--primary)}
+.pbar-top .r{font-size:15px;font-weight:600;color:var(--success)}
+.pbar{margin-top:12px;height:10px;width:100%;border-radius:999px;background:var(--line);overflow:hidden}
+.pfill{height:100%;border-radius:999px;background:var(--success);transition:width .3s}
+/* typography */
+.h2{font-size:28px;font-weight:500;line-height:1.15;letter-spacing:-.02em;color:var(--primary-dark)}
+.sub{margin-top:8px;font-size:15px;line-height:1.625;color:var(--ink-3)}
+.h3{font-size:17px;font-weight:500;color:var(--ink);margin-bottom:16px}
+.titleblock{margin-bottom:24px}
+/* logo */
+.logo{display:inline-flex;align-items:center;gap:8px;user-select:none}
+.logo .name{font-size:20px;font-weight:700;letter-spacing:-.01em;color:var(--primary-dark)}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;height:52px;border-radius:12px;padding:0 24px;font-size:15px;font-weight:500;border:none;cursor:pointer;transition:background .2s,color .2s;font-family:inherit}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 1px 2px rgba(45,0,109,.25)}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-secondary{background:var(--primary-dark);color:#fff}
+.btn-secondary:hover{background:var(--primary-hover)}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line-strong)}
+.btn:disabled{background:var(--line);color:var(--ink-3);cursor:not-allowed;box-shadow:none}
+.linkbtn{background:none;border:none;cursor:pointer;font-size:15px;font-weight:600;color:var(--primary);font-family:inherit}
+.link{color:var(--primary);font-weight:600}
+.stack{display:flex;flex-direction:column;gap:16px}
+.stack-sm{display:flex;flex-direction:column;gap:12px}
+.center{text-align:center}
+.muted{font-size:14px;color:var(--ink-3)}
+/* fields */
+.field{display:block;margin-bottom:20px}
+.field:last-child{margin-bottom:0}
+.label{display:block;margin-bottom:8px;font-size:14px;font-weight:500;color:var(--ink)}
+.input,.select,.textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:10px;padding:0 16px;height:52px;font-size:15px;color:var(--ink);font-family:inherit;transition:border-color .2s}
+.textarea{padding:14px 16px;min-height:60px;height:auto;line-height:1.5;resize:none}
+.input::placeholder,.textarea::placeholder{color:var(--placeholder)}
+.input:focus,.select:focus,.textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(117,75,241,.2)}
+.hint{margin-top:6px;display:block;font-size:13px;color:var(--ink-3)}
+.select-wrap{position:relative}
+.select{appearance:none;padding-right:44px}
+.select.empty{color:var(--placeholder)}
+.chev{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--ink-3);pointer-events:none}
+.divider{border-top:1px solid var(--line);padding-top:20px;margin-top:4px}
+/* radio card */
+.rcard{display:flex;align-items:center;gap:16px;width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:16px;text-align:left;cursor:pointer;transition:border-color .2s,background .2s;font-family:inherit}
+.rcard:hover{border-color:var(--line-strong)}
+.rcard.sel{border-color:var(--primary);background:var(--purple-50)}
+.rcard .ic{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:999px;background:var(--page);color:var(--ink-2);flex-shrink:0}
+.rcard.sel .ic{background:var(--primary-dark);color:#fff}
+.rcard .tx{flex:1;min-width:0}
+.rcard .tt{display:block;font-size:15px;font-weight:500;color:var(--ink)}
+.rcard.sel .tt{color:var(--primary-dark)}
+.rcard .dd{display:block;margin-top:2px;font-size:13px;line-height:1.3;color:var(--ink-3)}
+.radio{position:relative;display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:999px;border:2px solid var(--line-strong);flex-shrink:0}
+.rcard.sel .radio,.seg .on .radio{border-color:var(--primary)}
+.radio .fill{width:10px;height:10px;border-radius:999px;background:var(--primary)}
+/* segmented */
+.seg{display:flex;gap:12px}
+.seg button{flex:1;display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:12px 16px;font-size:14px;color:var(--ink-3);cursor:pointer;font-family:inherit;transition:.2s;text-align:left}
+.seg button:hover{border-color:var(--line-strong)}
+.seg .on{border-color:var(--primary);background:var(--purple-50);font-weight:500;color:var(--primary-dark)}
+.seg .radio{width:18px;height:18px}
+.qlabel{margin-bottom:8px;font-size:14px;font-weight:500;color:var(--ink)}
+/* doc row */
+.drow{display:flex;align-items:center;gap:14px;border-radius:12px;padding:14px 16px}
+.drow.done{background:var(--page)}
+.drow.pending{border:1px solid rgba(117,75,241,.6);background:#fff}
+.drow .st{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;flex-shrink:0}
+.drow.done .st{background:var(--primary-dark);color:#fff}
+.drow.pending .st{background:var(--page);color:var(--ink-3)}
+.drow .tx{flex:1;min-width:0}
+.drow .tt{font-size:15px;font-weight:500;color:var(--ink)}
+.drow .dd{font-size:13px;color:var(--ink-3)}
+.listo{font-size:14px;font-weight:500;color:var(--success)}
+.subir{border:none;border-radius:9px;background:var(--primary-dark);color:#fff;padding:8px 16px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit}
+.subir:hover{background:var(--primary-hover)}
+/* upload field */
+.ufield{display:flex;align-items:center;gap:14px;border-radius:12px;background:var(--surface);padding:14px 16px}
+.ufield .ic{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:#fff;color:var(--ink-3);flex-shrink:0}
+.ufield .ic.ok{background:var(--success-bg);color:var(--success)}
+.ufield p{flex:1;min-width:0;font-size:14px;line-height:1.3;color:var(--ink-3)}
+/* dropzone */
+.dz{display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px dashed rgba(117,75,241,.5);background:var(--surface);border-radius:16px;padding:48px 24px;text-align:center;cursor:pointer}
+.dz.ok{border-color:var(--success);background:rgba(232,255,244,.5)}
+.dz .ring{display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:999px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06);margin-bottom:16px;color:var(--ink-2)}
+.dz.ok .ring{color:var(--success)}
+.dz .t1{font-size:15px;font-weight:600;color:var(--primary)}
+.dz.ok .t1{color:var(--success)}
+.dz .t2{margin-top:4px;font-size:13px;color:var(--ink-3)}
+/* info box */
+.infobox{border-radius:12px;background:var(--surface);padding:16px}
+.infobox.success{background:var(--success-bg);border:1px solid rgba(2,122,72,.25)}
+.infobox .bt{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:15px;font-weight:600;color:var(--primary-dark)}
+.infobox.success .bt{color:var(--success)}
+.infobox .bd{font-size:14px;line-height:1.625;color:var(--ink-2)}
+.infobox ul{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.infobox li{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink-2)}
+.infobox li svg{color:var(--primary);flex-shrink:0}
+/* icon badge */
+.badge{display:flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:999px;margin-bottom:24px}
+.badge.success{background:var(--success-bg);color:var(--success)}
+.badge.dark{background:var(--success-bg);color:var(--primary-dark)}
+.badge.danger{background:var(--danger-bg);color:var(--danger)}
+.badge.alert{background:var(--alert-bg);color:var(--alert)}
+.badge.center{margin-left:auto;margin-right:auto}
+.h2b{font-size:22px;font-weight:700;color:var(--ink)}
+.illus{display:flex;align-items:center;justify-content:center;height:200px;border-radius:16px;background:var(--purple-50);margin-bottom:32px}
+.illus .r{display:flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:999px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06);color:var(--primary)}
+/* fade */
+.fade{animation:fu .28s cubic-bezier(.2,0,0,1) both}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.fade{animation:none}}
+/* demo nav */
+.demo{position:fixed;bottom:16px;right:16px;z-index:50}
+.fab{display:flex;align-items:center;gap:8px;height:44px;border:none;border-radius:999px;background:var(--primary-dark);color:#fff;padding:0 16px;font-size:13px;font-weight:500;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08);font-family:inherit}
+.fab .d{width:8px;height:8px;border-radius:999px;background:var(--teal)}
+.panel{margin-bottom:12px;max-height:70vh;width:256px;overflow-y:auto;border:1px solid var(--line);background:#fff;border-radius:16px;padding:16px;box-shadow:0 4px 8px rgba(0,0,0,.04),0 16px 40px rgba(0,0,0,.1)}
+.panel .hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.panel .hd b{font-size:13px;color:var(--ink)}
+.panel .hd button{background:none;border:none;color:var(--primary);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit}
+.grp{margin-bottom:12px}
+.grp:last-child{margin-bottom:0}
+.grp .gt{margin-bottom:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3)}
+.pitem{display:block;width:100%;border:none;background:none;text-align:left;border-radius:6px;padding:6px 10px;font-size:13px;color:var(--ink-2);cursor:pointer;font-family:inherit}
+.pitem:hover{background:var(--page)}
+.pitem.on{background:var(--purple-50);font-weight:500;color:var(--primary-dark)}
+.preset{display:block;width:100%;border:1px solid var(--line);background:var(--page);text-align:left;border-radius:6px;padding:6px 10px;font-size:13px;font-weight:500;color:var(--primary-dark);cursor:pointer;font-family:inherit;margin-bottom:6px}
+.preset:hover{background:var(--purple-50)}
+.demobar{background:var(--purple-50);color:var(--primary-dark);text-align:center;font-size:12px;padding:6px;border-bottom:1px solid var(--purple-200)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+"use strict";
+/* ============================ ICONS ============================ */
+const P={
+  arrow:'<path d="M19 12H5M12 19l-7-7 7-7"/>',
+  chev:'<path d="m6 9 6 6 6-6"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/>',
+  fileup:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15l3-3 3 3"/>',
+  alert:'<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/>',
+  xcircle:'<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/>',
+  info:'<circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>',
+  star:'<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>',
+  shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
+  badge:'<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.78 4.78 4 4 0 0 1-6.74 0 4 4 0 0 1-4.78-4.78 4 4 0 0 1 0-6.75z"/><path d="m9 12 2 2 4-4"/>',
+  filecheck:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/>',
+  user:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  building:'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M9 6h.01M15 6h.01M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/>',
+  card:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>',
+  globe:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+  utensils:'<path d="M3 2v7c0 1.1.9 2 2 2a2 2 0 0 0 2-2V2M5 2v20M17 2v20M21 15V2a5 5 0 0 0-4 4.9V11c0 2 1.5 3 4 4z"/>',
+  bag:'<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/>',
+  brief:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>'
+};
+function ic(n,s){s=s||20;return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${P[n]}</svg>`}
+const ACT_ICON={restaurant:'utensils',shop:'bag',briefcase:'brief'};
+
+/* ============================ CATALOGS ============================ */
+const VOLUME=[
+  {id:'r1',label:'Menos de $2,000',exceeds:false},
+  {id:'r2',label:'$2,001 - $5,000',exceeds:false},
+  {id:'r3',label:'$5,001 - $8,000',exceeds:false},
+  {id:'r4',label:'Más de $8,000',exceeds:true}
+];
+const REGIMENES=[
+  '601 - General de Ley Personas Morales',
+  '603 - Personas Morales con Fines no Lucrativos',
+  '605 - Sueldos y Salarios e Ingresos Asimilados a Salarios',
+  '612 - Personas Físicas con Actividades Empresariales y Profesionales',
+  '621 - Incorporación Fiscal',
+  '626 - Régimen Simplificado de Confianza (RESICO)'
+];
+const POLITICAS=['Política estándar de 30 días','Devolución dentro de 15 días','Solo cambios, sin reembolso','Sin devoluciones (bienes perecederos)','Política personalizada'];
+const GIROS={
+  '5812':{blocked:false},'5651':{blocked:false},'8999':{blocked:false},'5399':{blocked:false},
+  '5411':{blocked:false},'5941':{blocked:false},
+  '7995':{blocked:true,reason:'La actividad seleccionada no está disponible para este tipo de servicio.'},
+  '7273':{blocked:true,reason:'La actividad seleccionada no está disponible para este tipo de servicio.'}
+};
+const ACTIVITIES=[
+  {id:'restaurant',label:'Restaurante',desc:'Venta de alimentos y bebidas preparados',icon:'restaurant',giro:'5812'},
+  {id:'ropa',label:'Tienda de ropa',desc:'Venta minorista de prendas de vestir y accesorios',icon:'shop',giro:'5651'},
+  {id:'servicios',label:'Servicios profesionales',desc:'Consultoría, servicios médicos, legales, etc.',icon:'briefcase',giro:'8999'}
+];
+const ALL_ACT=ACTIVITIES.concat([
+  {id:'abarrotes',label:'Abarrotes y minisúper',desc:'Venta de productos de consumo básico',icon:'shop',giro:'5411'},
+  {id:'deportes',label:'Artículos deportivos',desc:'Venta de ropa y equipo deportivo',icon:'shop',giro:'5941'},
+  {id:'apuestas',label:'Casa de apuestas',desc:'Juegos de azar y apuestas',icon:'briefcase',giro:'7995'}
+]);
+const getAct=id=>ALL_ACT.find(a=>a.id===id);
+
+/* ============================ RULES ENGINE (BR-001..BR-020) ============================ */
+function classifyLevel(s){const r=VOLUME.find(v=>v.id===s.volumeRangeId);if(!r)return null;return r.exceeds?'FUERA':'NIVEL_0'}
+function resolveScenario(s){
+  if(!s.personType)return null;
+  if(s.hasRfc===false)return 'SIN_RFC';
+  if(s.personType==='PM')return 'PM';
+  return s.doesBusinessActivity?'PF_CON':'PF_SIN';
+}
+function validateRfc(s){
+  if(s.hasRfc===false)return 'missing';
+  const rfc=(s.rfc||'').replace(/\s+/g,'').toUpperCase();
+  if(!rfc)return 'inconsistent';
+  if(rfc.includes('ERROR'))return 'inconsistent';
+  return /^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{2,3}$/.test(rfc)?'valid':'inconsistent';
+}
+const giroBlocked=id=>!!(GIROS[id]&&GIROS[id].blocked);
+const giroReason=id=>GIROS[id]&&GIROS[id].reason;
+function buildRequirements(s){
+  const sc=resolveScenario(s);const r=[];
+  r.push(
+    {id:'id_oficial',label:sc==='SIN_RFC'?'Identificación oficial tipo pasaporte (ambos lados)':'Identificación oficial vigente (ambos lados)',kind:'upload'},
+    {id:'estado_cuenta',label:'Estado de cuenta bancario',kind:'upload'},
+    {id:'contrato',label:'Contrato de sub-afiliado',kind:'upload'},
+    {id:'ventas',label:'Ventas estimadas (capturado)',kind:'captured'},
+    {id:'modo',label:'Modo de operación (capturado)',kind:'captured'}
+  );
+  if(sc==='PF_SIN')r.push({id:'buro',label:'Formato de consulta de buró de crédito firmado',kind:'upload'});
+  else if(sc==='PF_CON')r.push({id:'alta',label:'Alta de Hacienda y/o RFC del comercio',kind:'upload'});
+  else if(sc==='PM')r.push({id:'acta',label:'Acta constitutiva y poderes del representante legal',kind:'upload'});
+  else if(sc==='SIN_RFC')r.push({id:'anexo',label:'Anexo B (Sub-afiliado sin alta de Hacienda)',kind:'captured'});
+  if(s.channel==='TNP')r.push(
+    {id:'buro_tnp',label:'Formato de consulta de buró de crédito firmado',kind:'upload'},
+    {id:'capturas',label:'Capturas del sitio (inicio, pago, políticas)',kind:'upload'},
+    {id:'catalogo',label:'Catálogo de productos / servicios',kind:'upload'},
+    {id:'mkt',label:'Materiales de mercadotecnia / publicidad',kind:'upload'}
+  );
+  const seen={};return r.filter(x=>{if(seen[x.label])return false;seen[x.label]=1;return true});
+}
+function reqStatus(req,s){return (req.kind==='captured'||s.documentsDone[req.id])?'done':'pending'}
+
+/* ============================ FLOW ============================ */
+const CAPTURE=['person-type','tax-data','business-info','bank-data','activity','volume','channel'];
+const TOTAL=CAPTURE.length;
+function stepNumber(scr){
+  const alias={'sin-rfc-route':'tax-data','rfc-error':'tax-data','tnp-extra-info':'channel'};
+  const t=alias[scr]||scr;const i=CAPTURE.indexOf(t);return i===-1?null:i+1;
+}
+function nextScreen(scr,s){
+  switch(scr){
+    case 'welcome':return 'person-type';
+    case 'person-type':return s.hasRfc===false?'sin-rfc-route':'tax-data';
+    case 'tax-data':return validateRfc(s)==='inconsistent'?'rfc-error':'business-info';
+    case 'sin-rfc-route':return 'business-info';
+    case 'business-info':return 'bank-data';
+    case 'bank-data':return 'activity';
+    case 'activity':return giroBlocked(s.giroId)?'blocked':'volume';
+    case 'volume':return classifyLevel(s)==='FUERA'?'high-volume-redirect':'channel';
+    case 'channel':return s.channel==='TNP'?'tnp-extra-info':'checklist';
+    case 'tnp-extra-info':return 'checklist';
+    case 'checklist':return 'upload';
+    case 'upload':return 'complete';
+    case 'complete':return 'status-enviado';
+    default:return scr;
+  }
+}
+
+/* ============================ PRESETS ============================ */
+const PRESETS=[
+  {id:'pf',label:'PF con actividad · TP',data:{personType:'PF',hasRfc:true,doesBusinessActivity:true,rfc:'ROMA850312HN4',nombreCompleto:'Ana María Rodríguez López',regimenFiscal:'612 - Personas Físicas con Actividades Empresariales y Profesionales',domicilioFiscal:'Calle Primavera 22, Col. Del Valle, CDMX',businessName:'Boutique Aurora',email:'contacto@boutiqueaurora.mx',phone:'55 1234 5678',address:'Av. Insurgentes Sur 1234, CDMX',bank:'Banorte',clabe:'072180000012345678',accountHolder:'Ana María Rodríguez López',activityId:'ropa',giroId:'5651',volumeRangeId:'r2',channel:'TP'}},
+  {id:'pm',label:'Persona Moral · TNP',data:{personType:'PM',hasRfc:true,doesBusinessActivity:null,rfc:'VTE220412KJ9',razonSocial:'Velpay Tecnologías S.A. de C.V.',regimenFiscal:'601 - General de Ley Personas Morales',domicilioFiscal:'Av. Reforma 405, Piso 12, CDMX',representanteLegal:'David Alejandro Gómez',businessName:'Velpay Store',email:'ventas@velpaystore.mx',phone:'55 8765 4321',address:'Av. Reforma 405, Piso 12, CDMX',bank:'Banorte',clabe:'072180000087654321',accountHolder:'Velpay Tecnologías S.A. de C.V.',activityId:'servicios',giroId:'8999',volumeRangeId:'r3',channel:'TNP',tnp:{url:'https://velpaystore.mx',products:'Ropa de diseño, calzado y accesorios',description:'Fabricamos y distribuimos prendas hechas a mano en México.',policies:'Devolución dentro de 15 días',paymentFlow:'Pago en línea con tarjeta, transferencia y PayPal'}}},
+  {id:'sinrfc',label:'Sin RFC · giro 5399',data:{personType:'PF',hasRfc:false,doesBusinessActivity:true,nombreCompleto:'Juan Pérez Hernández',domicilioFiscal:'Mercado Local 5, Col. Centro, CDMX',businessName:'Tacos El Güero',email:'elguero@gmail.com',phone:'55 2222 3333',address:'Mercado Local 5, Col. Centro, CDMX',bank:'Banorte',clabe:'072180000011112222',accountHolder:'Juan Pérez Hernández',activityId:'restaurant',giroId:'5812',volumeRangeId:'r1',channel:'TP'}}
+];
+
+/* ============================ STATE ============================ */
+const KEY='velpay-onboarding-proto-v1';
+function emptyState(){return{screen:'welcome',history:[],
+  personType:null,hasRfc:null,doesBusinessActivity:null,
+  rfc:'',razonSocial:'',nombreCompleto:'',regimenFiscal:'',domicilioFiscal:'',representanteLegal:'',
+  businessName:'',email:'',phone:'',address:'',bank:'',clabe:'',accountHolder:'',
+  activityId:null,giroId:null,volumeRangeId:null,channel:null,
+  tnp:{url:'',products:'',description:'',policies:'',paymentFlow:''},
+  documentsDone:{},navOpen:false,query:''};}
+let state=load();
+function load(){try{const r=localStorage.getItem(KEY);if(r){return Object.assign(emptyState(),JSON.parse(r))}}catch(e){}return emptyState()}
+function save(){try{const c=Object.assign({},state);delete c.navOpen;delete c.query;localStorage.setItem(KEY,JSON.stringify(c))}catch(e){}}
+function setField(path,val){const p=path.split('.');if(p.length===1)state[p[0]]=val;else state[p[0]][p[1]]=val;save()}
+function go(scr){state.history.push(state.screen);state.screen=scr;window.scrollTo({top:0});save();render()}
+function next(){const t=nextScreen(state.screen,state);if(t===state.screen)return;state.history.push(state.screen);state.screen=t;window.scrollTo({top:0});save();render()}
+function back(){if(state.history.length===0)return;state.screen=state.history.pop();window.scrollTo({top:0});save();render()}
+function reset(){const nav=state.navOpen;state=emptyState();state.navOpen=nav;try{localStorage.removeItem(KEY)}catch(e){}render()}
+function applyPreset(id){const p=PRESETS.find(x=>x.id===id);if(!p)return;Object.assign(state,JSON.parse(JSON.stringify(p.data)));state.documentsDone={};state.history=[];state.screen='person-type';save();render()}
+
+/* ============================ UI HELPERS ============================ */
+const TAG='Recibe pagos fácilmente, procesa compras rápidamente y administra tu dinero de manera más eficiente.';
+function logo(){return `<span class="logo"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 4.5 9 17.5 15 4.5" fill="none" stroke="#2d006d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.5" cy="6" r="2.4" fill="#12b3b3"/></svg><span class="name">Velpay</span></span>`}
+function dots(cur){let h='';for(let i=1;i<=TOTAL;i++){const c=i===cur?'dot current':(i<cur?'dot done':'dot');h+=`<span class="${c}"></span>`}return `<div class="dots">${h}</div>`}
+function wizardHeader(step,right){
+  const canBack=state.history.length>0;
+  const rlabel=right!=null?right:(step?`Paso ${step} de ${TOTAL}`:'');
+  return `<div class="whead"><div class="wtop">
+    <button class="back" data-action="back" ${canBack?'':'disabled'}><span class="circle">${ic('arrow',16)}</span>Atrás</button>
+    <span class="steplabel">${rlabel}</span></div>${step?dots(step):''}</div>`;
+}
+function title(t,sub){return `<div class="titleblock"><h2 class="h2">${t}</h2>${sub?`<p class="sub">${sub}</p>`:''}</div>`}
+function field(o){
+  const hint=o.hint?`<span class="hint">${o.hint}</span>`:'';
+  return `<label class="field"><span class="label">${o.label}</span>
+    <input class="input" data-field="${o.field}" value="${(state[o.field]||'').replace(/"/g,'&quot;')}" placeholder="${o.ph||''}" ${o.type?`type="${o.type}"`:''}/>${hint}</label>`;
+}
+function tnpField(o){
+  const cur=state.tnp[o.key]||'';const hint=o.hint?`<span class="hint">${o.hint}</span>`:'';
+  if(o.area)return `<label class="field"><span class="label">${o.label}</span><textarea class="textarea" rows="2" data-field="tnp.${o.key}" placeholder="${o.ph||''}">${cur}</textarea>${hint}</label>`;
+  return `<label class="field"><span class="label">${o.label}</span><input class="input" data-field="tnp.${o.key}" value="${cur.replace(/"/g,'&quot;')}" placeholder="${o.ph||''}"/>${hint}</label>`;
+}
+function selectField(o){
+  const cur=o.tnp?state.tnp[o.key]:state[o.field];const df=o.tnp?`tnp.${o.key}`:o.field;
+  const opts=o.options.map(x=>`<option value="${x}" ${x===cur?'selected':''}>${x}</option>`).join('');
+  return `<label class="field"><span class="label">${o.label}</span><div class="select-wrap">
+    <select class="select ${cur?'':'empty'}" data-field-select="${df}"><option value="" disabled ${cur?'':'selected'}>${o.ph}</option>${opts}</select>
+    <span class="chev">${ic('chev',20)}</span></div></label>`;
+}
+function rcard(o){
+  const sel=o.sel;
+  return `<button class="rcard ${sel?'sel':''}" data-action="${o.action}" ${o.dataAttr||''}>
+    ${o.icon?`<span class="ic">${ic(o.icon,20)}</span>`:''}
+    <span class="tx"><span class="tt">${o.title}</span>${o.desc?`<span class="dd">${o.desc}</span>`:''}</span>
+    <span class="radio">${sel?'<span class="fill"></span>':''}</span></button>`;
+}
+function seg(o){
+  return `<div class="seg">${o.options.map(x=>`<button class="${x.sel?'on':''}" data-action="${o.action}" data-value="${x.value}">
+    <span class="radio">${x.sel?'<span class="fill"></span>':''}</span>${x.label}</button>`).join('')}</div>`;
+}
+function primary(label,opts){opts=opts||{};const act=opts.action||'next';const dis=opts.disabled?'disabled':'';
+  return `<button class="btn btn-primary" data-role="primary" data-action="${act}" ${opts.screen?`data-screen="${opts.screen}"`:''} ${dis}>${label}</button>`}
+
+/* ============================ SCREENS ============================ */
+const SCREENS={
+welcome:s=>({layout:'split',header:logo(),
+  body:title('Vamos a registrar tu negocio','Necesitaremos algunos datos y documentos para completar tu solicitud. El proceso tomará menos de 10 minutos.')+dots(1),
+  footer:`<div class="stack center">${primary('Comenzar')}<p class="muted">¿Ya tienes una cuenta? <span class="link">Inicia sesión aquí</span></p></div>`
+}),
+
+'person-type':s=>{
+  const isPF=s.personType==='PF';
+  const complete=s.personType!==null&&s.hasRfc!==null&&(!isPF||s.doesBusinessActivity!==null);
+  let extra='';
+  if(s.personType){
+    extra=`<div class="fade" style="margin-top:24px;display:flex;flex-direction:column;gap:20px">
+      <div><p class="qlabel">¿Cuentas con Registro Federal de Contribuyentes (RFC)?</p>
+        ${seg({action:'setrfc',options:[{value:'yes',label:'Sí, cuento con RFC',sel:s.hasRfc===true},{value:'no',label:'No, aún no lo tengo',sel:s.hasRfc===false}]})}</div>
+      ${isPF?`<div><p class="qlabel">¿Realizas actividad empresarial?</p>
+        ${seg({action:'setact',options:[{value:'yes',label:'Sí, realizo actividad empresarial',sel:s.doesBusinessActivity===true},{value:'no',label:'No, no realizo actividad empresarial',sel:s.doesBusinessActivity===false}]})}</div>`:''}
+      <p class="hint">Esto determina qué documentos necesitarás para completar tu registro.</p></div>`;
+  }
+  return {layout:'split',header:wizardHeader(1),
+    body:title('¿Cómo está registrado tu negocio?')+`<div class="stack-sm">
+      ${rcard({sel:s.personType==='PF',action:'settype',dataAttr:'data-value="PF"',icon:'user',title:'Persona física / emprendedor',desc:'Realizo actividades comerciales de manera individual o independiente'})}
+      ${rcard({sel:s.personType==='PM',action:'settype',dataAttr:'data-value="PM"',icon:'building',title:'Persona moral / empresa',desc:'Empresa constituida como sociedad mercantil o asociación civil'})}
+    </div>`+extra,
+    footer:primary('Continuar',{disabled:!complete})};
+},
+
+'tax-data':s=>{
+  const sc=resolveScenario(s);const isPM=sc==='PM';
+  const can=()=>isPM?(s.razonSocial.trim()&&s.rfc.trim()):(s.nombreCompleto.trim()&&s.rfc.trim());
+  let body;
+  if(isPM){
+    body=field({label:'Razón social (requerido)',field:'razonSocial',ph:'Velpay Tecnologías S.A. de C.V.'})+
+      field({label:'RFC de la persona moral (requerido)',field:'rfc',ph:'VTE220412KJ9',hint:'Formato válido de 12 caracteres. Se valida contra tu razón social.'})+
+      selectField({label:'Régimen fiscal',field:'regimenFiscal',ph:'Selecciona un régimen',options:REGIMENES})+
+      field({label:'Domicilio fiscal',field:'domicilioFiscal',ph:'Av. Reforma 405, Piso 12, Ciudad de México'})+
+      `<div class="divider"><h3 class="h3">Representante legal</h3>`+
+      field({label:'Nombre completo del representante',field:'representanteLegal',ph:'David Alejandro Gómez'})+
+      `<p class="hint">En el expediente requeriremos acta constitutiva y poderes del representante legal.</p></div>`;
+  }else{
+    body=field({label:'Nombre completo (requerido)',field:'nombreCompleto',ph:'Ana María Rodríguez'})+
+      field({label:'RFC (requerido)',field:'rfc',ph:'ROMA850312HN4',hint:'Formato válido de 13 caracteres. Se valida contra tu nombre.'})+
+      (sc==='PF_CON'?selectField({label:'Régimen fiscal',field:'regimenFiscal',ph:'Selecciona un régimen',options:REGIMENES}):'')+
+      field({label:sc==='PF_CON'?'Domicilio fiscal':'Domicilio particular',field:'domicilioFiscal',ph:'Calle Primavera 22, Ciudad de México'});
+  }
+  return {layout:'split',align:'start',header:wizardHeader(2),
+    body:title('Datos fiscales',isPM?'Persona moral':'Persona física')+`<div>${body}</div>`,
+    footer:primary('Continuar',{disabled:!can()}),canContinue:()=>!!can()};
+},
+
+'sin-rfc-route':s=>({layout:'split',header:wizardHeader(2),
+  body:title('Registro sin RFC')+`<div class="infobox" style="padding:20px">
+    <p style="margin-bottom:16px;font-size:15px;font-weight:500;color:var(--ink)">Tu negocio se registrará bajo el giro 5399 (Anexo B) y se usará el RFC de Velpay como Agregador. Solo necesitas:</p>
+    <ul><li>${ic('shield',18)}Identificación oficial tipo pasaporte</li><li>${ic('shield',18)}La operación se restringe a tarjetas nacionales</li></ul></div>`,
+  footer:primary('Continuar con mi registro')}),
+
+'rfc-error':s=>({layout:'split',header:wizardHeader(2),
+  body:`<span class="badge danger">${ic('alert',26)}</span><h2 class="h2">La información fiscal no coincide</h2>
+    <p class="sub" style="max-width:440px">Favor de verificar los datos. El RFC ingresado no corresponde con la información fiscal proporcionada.</p>`,
+  footer:`<div class="stack-sm"><button class="btn btn-primary" data-action="go" data-screen="tax-data">Corregir datos</button><button class="btn btn-secondary">Necesito ayuda</button></div>`}),
+
+'business-info':s=>{
+  const can=()=>s.businessName.trim()&&s.email.trim();
+  return {layout:'split',align:'start',header:wizardHeader(3),
+    body:title('Datos de tu negocio')+
+      field({label:'Nombre comercial',field:'businessName',ph:'Ej. Mi Tienda de Ropa',hint:'Este nombre aparecerá en tus comprobantes.'})+
+      field({label:'Correo electrónico del negocio',field:'email',type:'email',ph:'contacto@mitienda.com',hint:'Usaremos este correo para notificaciones importantes.'})+
+      field({label:'Teléfono del negocio',field:'phone',ph:'55 1234 5678',hint:'Para confirmaciones y soporte.'})+
+      field({label:'Dirección del negocio',field:'address',ph:'Av. Principal 123, Ciudad de México',hint:'Dirección fiscal de tu empresa.'}),
+    footer:primary('Continuar',{disabled:!can()}),canContinue:()=>!!can()};
+},
+
+'bank-data':s=>{
+  const can=()=>s.bank.trim()&&s.clabe.trim();const up=s.documentsDone.__bankdoc;
+  return {layout:'split',align:'start',header:wizardHeader(4),
+    body:title('Datos bancarios','Necesitamos la cuenta donde se abonarán tus ventas.')+
+      field({label:'Banco',field:'bank',ph:'Banorte'})+
+      field({label:'CLABE (18 dígitos)',field:'clabe',ph:'072 180 0000 0000 0000'})+
+      field({label:'Titular de la cuenta',field:'accountHolder',ph:'Comercializadora Velpay S.A. de C.V.'})+
+      `<p class="hint" style="margin-bottom:16px">El estado de cuenta debe mostrar el nombre del comercio.</p>
+      <div class="ufield"><span class="ic ${up?'ok':''}">${ic(up?'check':'fileup',17)}</span>
+      <p>Estado de cuenta bancario — Formatos permitidos: PDF, JPG, PNG (máx. 10MB)</p>
+      <button class="subir" data-action="upload" data-doc="__bankdoc">${up?'Cargado':'Subir'}</button></div>`,
+    footer:primary('Continuar',{disabled:!can()}),canContinue:()=>!!can()};
+},
+
+'activity':s=>{
+  const q=(s.query||'').trim().toLowerCase();
+  const list=q===''?ACTIVITIES:ALL_ACT.filter(a=>(a.label+' '+a.desc).toLowerCase().includes(q));
+  const cards=list.map(a=>rcard({sel:s.activityId===a.id,action:'selact',dataAttr:`data-id="${a.id}"`,icon:ACT_ICON[a.icon],title:a.label,desc:a.desc})).join('');
+  return {layout:'split',align:'start',header:wizardHeader(5),
+    body:title('¿A qué se dedica tu negocio?')+
+      `<label class="field"><input class="input" data-field="query" value="${(s.query||'').replace(/"/g,'&quot;')}" placeholder="Buscar actividad..."/></label>
+      <p style="margin:20px 0 12px;font-size:13px;font-weight:500;color:var(--ink-3)">${q?'Resultados':'Actividades sugeridas'}</p>
+      <div class="stack-sm">${cards||'<p class="muted">Sin resultados.</p>'}</div>`,
+    footer:primary('Continuar',{disabled:!s.activityId})};
+},
+
+blocked:s=>({layout:'centered',
+  body:`<div style="margin-bottom:24px;display:flex;justify-content:center">${logo()}</div>
+    <span class="badge danger center">${ic('alert',26)}</span>
+    <h2 class="h2b">No podemos continuar con el registro</h2>
+    <p class="sub" style="max-width:360px;margin:8px auto 0">${giroReason(s.giroId)||'La actividad seleccionada no está disponible para este tipo de servicio.'}</p>
+    <div style="margin-top:32px" class="stack"><button class="btn btn-primary" data-action="go" data-screen="activity">Elegir otra actividad</button>
+    <button class="linkbtn" data-action="reset">Salir</button></div>`}),
+
+volume:s=>({layout:'split',header:wizardHeader(6),
+  body:title('¿Cuánto esperas vender al mes?','Selecciona el volumen aproximado de ventas de tu negocio.')+
+    `<div class="stack-sm">${VOLUME.map(v=>rcard({sel:s.volumeRangeId===v.id,action:'setvol',dataAttr:`data-id="${v.id}"`,title:v.label})).join('')}</div>`,
+  footer:primary('Continuar',{disabled:!s.volumeRangeId})}),
+
+'high-volume-redirect':s=>({layout:'split',header:wizardHeader(7),
+  body:`<div class="illus"><span class="r">${ic('star',28)}</span></div>`+
+    title('Tu negocio puede acceder a una solución más completa','Para continuar con tu registro, crearemos tu cuenta en Velpay Assistant. Disfrutarás de comisiones preferenciales y soporte dedicado.'),
+  footer:`<div class="stack center"><button class="btn btn-primary" data-action="reset">Crear cuenta y continuar</button><button class="linkbtn" data-action="back">← Volver</button></div>`}),
+
+channel:s=>({layout:'split',header:wizardHeader(7),
+  body:title('¿Cómo recibirás pagos?','Selecciona el canal principal para realizar los cobros en tu negocio.')+
+    `<div class="stack-sm">
+      ${rcard({sel:s.channel==='TP',action:'setchan',dataAttr:'data-value="TP"',icon:'card',title:'Terminal física / mPOS',desc:'Recibe pagos con tarjeta de manera física en tu negocio o punto de venta'})}
+      ${rcard({sel:s.channel==='TNP',action:'setchan',dataAttr:'data-value="TNP"',icon:'globe',title:'Pagos en línea',desc:'Vende tus productos a través de internet con pasarelas de pago y links de cobro'})}
+    </div>`,
+  footer:primary('Continuar',{disabled:!s.channel})}),
+
+'tnp-extra-info':s=>({layout:'split',align:'start',header:wizardHeader(7),
+  body:title('Información de tu negocio en línea')+
+    tnpField({label:'URL del sitio',key:'url',ph:'https://mitienda.com',hint:'Ingresa la URL principal de tu tienda en línea'})+
+    tnpField({label:'Productos y servicios',key:'products',ph:'Ropa de diseño, calzado y accesorios de moda',hint:'Describe brevemente tu oferta comercial'})+
+    tnpField({label:'Descripción de actividad',key:'description',area:true,ph:'Fabricamos y distribuimos prendas confeccionadas a mano...',hint:'Esta información nos ayudará a validar tu perfil comercial'})+
+    selectField({label:'Políticas de entrega/cancelación/devolución',tnp:true,key:'policies',ph:'Selecciona la política aplicable a tu negocio',options:POLITICAS})+
+    tnpField({label:'Flujo de pago del sitio',key:'paymentFlow',ph:'Pago en línea con tarjeta, transferencia y PayPal',hint:'Describe el flujo de cobro y confirmación de compra'})+
+    tnpUpload('Evidencia del sitio - capturas de pantalla','Sube al menos 3 capturas: inicio, pago y políticas. PDF o PNG/JPG.','Subir capturas','u1')+
+    tnpUpload('Catálogo de productos/servicios','Sube un documento PDF o XLSX con tu oferta actual.','Subir documento','u2')+
+    tnpUpload('Materiales de mercadotecnia','Sube logos, banners o guías visuales de tu marca.','Subir archivos','u3'),
+  footer:primary('Continuar')}),
+
+checklist:s=>{
+  const reqs=buildRequirements(s).map(r=>Object.assign({},r,{status:reqStatus(r,s)}));
+  const done=reqs.filter(r=>r.status==='done').length;const pct=Math.round(done/reqs.length*100);
+  const rows=reqs.map(r=>`<div class="drow ${r.status}"><span class="st">${ic(r.status==='done'?'check':'lock',r.status==='done'?16:15)}</span>
+    <div class="tx"><p class="tt">${r.label}</p><p class="dd">${r.status==='done'?'Completados y validados':'Pendiente de carga digital'}</p></div>
+    ${r.status==='done'?'<span class="listo">Listo</span>':`<button class="subir" data-action="upload" data-doc="${r.id}">Subir</button>`}</div>`).join('');
+  return {layout:'split',align:'start',
+    header:`<div><div class="pbar-top"><span class="l">Expediente de Registro</span><span class="r">${pct}% listo</span></div><div class="pbar"><div class="pfill" style="width:${pct}%"></div></div></div>`,
+    body:title('Completa tu expediente','Necesitamos estos documentos para continuar con tu solicitud de afiliación.')+`<div class="stack-sm">${rows}</div>`,
+    footer:`<button class="btn btn-secondary" data-action="next">Continuar</button>`};
+},
+
+upload:s=>{
+  const ok=s.documentsDone.__iddoc;
+  return {layout:'split',header:wizardHeader(7,'Subiendo Documentos'),
+    body:title('Sube tu identificación oficial','Asegúrate de que la identificación oficial (INE o Pasaporte) cumpla con:')+
+      `<ul style="list-style:none;margin-bottom:24px;display:flex;flex-direction:column;gap:12px">
+        ${['La imagen se vea completa y en foco','Esté vigente y contenga la firma oficial','Toda la información sea perfectamente legible'].map(t=>`<li style="display:flex;align-items:center;gap:12px;font-size:15px;color:var(--ink)"><span style="display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:var(--primary-dark);color:#fff">${ic('check',14)}</span>${t}</li>`).join('')}
+      </ul>
+      <div class="dz ${ok?'ok':''}" data-action="upload" data-doc="__iddoc"><span class="ring">${ic(ok?'check':'upload',ok?24:22)}</span>
+      ${ok?'<p class="t1">Archivo cargado</p><p class="t2">identificacion.pdf</p>':'<p class="t1">Subir archivo</p><p class="t2">Arrastra y suelta tu archivo aquí o haz clic para buscar</p><p class="t2">PDF, JPG o PNG (Máx. 10MB)</p>'}</div>`,
+    footer:primary('Continuar')};
+},
+
+complete:s=>({layout:'split',header:logo(),
+  body:`<span class="badge dark">${ic('badge',26)}</span><h2 class="h2">¡Tu expediente está completo!</h2>
+    <p class="sub" style="max-width:460px;margin-bottom:24px">Hemos recibido todos tus datos y documentos correctamente. El equipo técnico de Velpay iniciará la revisión para tu aprobación bancaria.</p>
+    <div class="infobox"><div class="bt">${ic('alert',18)}Tiempo estimado de respuesta</div><div class="bd">La validación ante la mesa de control de Banorte toma habitualmente entre 24 y 48 horas hábiles. Te enviaremos un correo tan pronto tu terminal y accesos estén activos.</div></div>`,
+  footer:`<div class="stack center">${primary('Ver mi solicitud')}<p class="muted">¿Tienes dudas sobre el proceso? <span class="link">Contacta a soporte aquí</span></p></div>`}),
+
+'status-enviado':s=>({layout:'split',header:wizardHeader(4),
+  body:`<span class="badge dark">${ic('filecheck',26)}</span>`+title('Tu expediente fue enviado','Hemos enviado tu expediente a Banorte para su revisión.')+
+    `<div class="infobox"><div class="bd"><div style="display:flex;flex-direction:column;gap:6px">
+      <div><span style="color:var(--ink-3)">Estado: </span><span style="font-weight:600;color:var(--alert)">En revisión por Banorte</span></div>
+      <div><span style="color:var(--ink-3)">Fecha: </span><span style="color:var(--ink)">25 agosto 2026</span></div>
+      <div><span style="color:var(--ink-3)">Tiempo estimado: </span><span style="color:var(--ink)">24-48 horas hábiles</span></div>
+    </div></div></div>`,
+  footer:`<button class="btn btn-primary" data-action="go" data-screen="status-aprobado">Ver mi expediente</button>`}),
+
+'status-info-adicional':s=>({layout:'split',align:'start',header:wizardHeader(5),
+  body:`<span class="badge alert">${ic('info',26)}</span>`+title('Banorte solicita información adicional','Para continuar con tu proceso, requerimos los siguientes documentos aclaratorios:')+
+    `<div class="stack">
+      <div><p class="qlabel">1. Comprobante de domicilio actualizado</p><div class="ufield"><span class="ic">${ic('fileup',17)}</span><p>Subir comprobante de domicilio (PDF o imagen)</p><button class="subir">Cargar</button></div></div>
+      <div><p class="qlabel">2. Aclaración sobre actividad declarada</p><div class="ufield"><span class="ic">${ic('fileup',17)}</span><p>Subir carta aclaratoria firmada</p><button class="subir">Cargar</button></div></div>
+    </div>`,
+  footer:`<button class="btn btn-primary" data-action="go" data-screen="status-aprobado">Enviar información</button>`}),
+
+'status-aprobado':s=>({layout:'split',header:wizardHeader(7),
+  body:`<span class="badge dark">${ic('badge',26)}</span>`+title('¡Tu negocio fue aprobado!','¡Felicidades! Banorte ha validado exitosamente toda tu información. Tu cuenta está lista para operar.')+
+    `<div class="infobox success"><div class="bt">Próximo paso: activaremos tu terminal.</div><div class="bd">Recibirás un correo de confirmación con las instrucciones finales de acceso y envío de tus terminales.</div></div>`,
+  footer:`<button class="btn btn-primary" data-action="reset">Entendido</button>`}),
+
+'status-rechazado':s=>({layout:'split',header:wizardHeader(7),
+  body:`<span class="badge danger">${ic('xcircle',26)}</span>`+title('Tu solicitud no fue aprobada','Lamentablemente, no pudimos procesar tu solicitud de afiliación en esta ocasión.')+
+    `<div class="infobox"><div class="bt">Motivo de resolución:</div><div class="bd">La actividad comercial declarada no cumple con las políticas internas de riesgo del banco adquirente (Giro restringido).</div></div>`,
+  footer:`<div class="stack-sm"><button class="btn btn-primary" data-action="reset">Iniciar nueva solicitud</button><button class="btn btn-secondary">Contactar soporte</button></div>`})
+};
+function tnpUpload(label,desc,btn,id){const n=state.documentsDone[id]||0;
+  return `<div class="field"><p class="qlabel">${label}</p><div class="infobox"><p class="bd" style="margin-bottom:12px">${desc}</p>
+    <div style="display:flex;align-items:center;gap:12px"><button class="subir" data-action="tnpcount" data-doc="${id}">${btn}</button><span style="font-size:13px;color:var(--ink-3)">${n} archivos cargados</span></div></div></div>`}
+
+/* ============================ DEMO NAV ============================ */
+const NAV=[
+  {t:'Captura',items:[['welcome','Bienvenida'],['person-type','Tipo de persona'],['tax-data','Datos fiscales'],['sin-rfc-route','Ruta sin RFC'],['rfc-error','Error de RFC'],['business-info','Datos del negocio'],['bank-data','Datos bancarios'],['activity','Giro / actividad'],['blocked','Giro bloqueado'],['volume','Volumen'],['high-volume-redirect','Redirección > $8k'],['channel','Canal TP / TNP'],['tnp-extra-info','Info TNP']]},
+  {t:'Expediente',items:[['checklist','Checklist'],['upload','Carga de ID'],['complete','Completado']]},
+  {t:'Post-envío',items:[['status-enviado','Enviado'],['status-info-adicional','Info adicional'],['status-aprobado','Aprobado'],['status-rechazado','Rechazado']]}
+];
+function demoNav(){
+  let panel='';
+  if(state.navOpen){
+    const presets=PRESETS.map(p=>`<button class="preset" data-action="preset" data-preset="${p.id}">${p.label}</button>`).join('');
+    const groups=NAV.map(g=>`<div class="grp"><p class="gt">${g.t}</p>${g.items.map(i=>`<button class="pitem ${state.screen===i[0]?'on':''}" data-action="go" data-screen="${i[0]}">${i[1]}</button>`).join('')}</div>`).join('');
+    panel=`<div class="panel"><div class="hd"><b>Vista de diseño</b><button data-action="reset">Reiniciar</button></div>
+      <div class="grp"><p class="gt">Datos de ejemplo</p>${presets}</div>${groups}</div>`;
+  }
+  return `<div class="demo">${panel}<button class="fab" data-action="togglenav"><span class="d"></span>${state.navOpen?'Cerrar':'Pantallas'}</button></div>`;
+}
+
+/* ============================ RENDER ============================ */
+const root=document.getElementById('root');
+let currentCanContinue=null;
+function render(){
+  const def=SCREENS[state.screen](state);
+  let html;
+  if(def.layout==='centered'){
+    html=`<div class="centered"><div class="card fade">${def.body}</div></div>`;
+  }else{
+    html=`<div class="split"><div class="left"><div class="col">
+      ${def.header||''}
+      <div class="content ${def.align==='start'?'start':''}"><div class="fade">${def.body}</div></div>
+      ${def.footer?`<div class="foot">${def.footer}</div>`:''}
+    </div></div><div class="gradient"><div class="tag"><p>${TAG}</p></div></div></div>`;
+  }
+  root.innerHTML=html+demoNav();
+  currentCanContinue=def.canContinue||null;
+}
+
+/* ============================ EVENTS ============================ */
+root.addEventListener('click',e=>{
+  const el=e.target.closest('[data-action]');if(!el)return;
+  const a=el.dataset.action,v=el.dataset.value,id=el.dataset.id,scr=el.dataset.screen,doc=el.dataset.doc;
+  switch(a){
+    case 'next':next();break;
+    case 'back':back();break;
+    case 'go':go(scr);break;
+    case 'reset':reset();break;
+    case 'togglenav':state.navOpen=!state.navOpen;render();break;
+    case 'preset':applyPreset(el.dataset.preset);break;
+    case 'settype':state.personType=v;if(v==='PM')state.doesBusinessActivity=null;save();render();break;
+    case 'setrfc':state.hasRfc=(v==='yes');save();render();break;
+    case 'setact':state.doesBusinessActivity=(v==='yes');save();render();break;
+    case 'setvol':state.volumeRangeId=id;save();render();break;
+    case 'setchan':state.channel=v;save();render();break;
+    case 'selact':{const act=getAct(id);state.activityId=id;state.giroId=act?act.giro:null;save();render();break;}
+    case 'upload':state.documentsDone[doc]=true;save();render();break;
+    case 'tnpcount':state.documentsDone[doc]=(state.documentsDone[doc]||0)+1;save();render();break;
+  }
+});
+root.addEventListener('input',e=>{
+  const el=e.target.closest('[data-field]');if(!el)return;
+  setField(el.dataset.field,el.value);
+  if(el.dataset.field==='query'){render();const q=root.querySelector('[data-field="query"]');if(q){q.focus();const n=q.value.length;q.setSelectionRange(n,n);}return;}
+  const pb=root.querySelector('[data-role="primary"]');
+  if(pb&&currentCanContinue)pb.disabled=!currentCanContinue();
+});
+root.addEventListener('change',e=>{
+  const el=e.target.closest('[data-field-select]');if(!el)return;
+  setField(el.dataset.fieldSelect,el.value);render();
+});
+render();
+</script>
+</body>
+</html>
