@@ -8,6 +8,7 @@ import { AuthOtp } from "./steps/AuthOtp";
 import { AuthPassword } from "./steps/AuthPassword";
 import { Activated } from "./steps/Activated";
 import { PersonType } from "./steps/PersonType";
+import { PersonalData } from "./steps/PersonalData";
 import { Documents } from "./steps/Documents";
 import { ConfirmData } from "./steps/ConfirmData";
 import { Business } from "./steps/Business";
@@ -25,6 +26,7 @@ const SCREENS: Record<Screen, () => React.JSX.Element> = {
   "auth-otp": AuthOtp,
   "auth-password": AuthPassword,
   "person-type": PersonType,
+  "personal-data": PersonalData,
   documents: Documents,
   confirm: ConfirmData,
   business: Business,

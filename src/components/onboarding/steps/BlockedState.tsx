@@ -25,8 +25,8 @@ export function BlockedState() {
         {reason}
       </p>
       <div className="mt-8 space-y-4">
-        <Button fullWidth onClick={() => go("business")}>
-          Elegir otra actividad
+        <Button fullWidth onClick={() => go("confirm")}>
+          Elegir otro giro
         </Button>
         <button
           type="button"

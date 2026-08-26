@@ -12,6 +12,16 @@ export const VOLUME_RANGES: VolumeRange[] = [
   { id: "r4", label: "Más de $8,000", min: 8001, max: null, exceedsNivel0: true },
 ];
 
+/** MCC catalog (Merchant Category Codes) — BR-009. */
+export const MCC_CATALOG = [
+  "5812 - Restaurantes",
+  "5651 - Tiendas de ropa",
+  "8999 - Servicios profesionales",
+  "5411 - Abarrotes y minisúper",
+  "5941 - Artículos deportivos",
+  "5399 - Comercio general",
+];
+
 /** Régimen fiscal SAT (subset relevant to Nivel 0). */
 export const REGIMENES_FISCALES = [
   "601 - General de Ley Personas Morales",

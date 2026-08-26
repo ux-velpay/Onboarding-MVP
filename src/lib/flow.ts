@@ -9,6 +9,7 @@ export type Screen =
   | "auth-otp"
   | "auth-password"
   | "person-type"
+  | "personal-data"
   | "documents"
   | "confirm"
   | "business"
@@ -26,6 +27,7 @@ export const CAPTURE_STEPS: Screen[] = [
   "auth-otp",
   "auth-password",
   "person-type",
+  "personal-data",
   "documents",
   "confirm",
   "business",
@@ -47,15 +49,18 @@ export function nextScreen(screen: Screen, data: OnboardingData): Screen {
     case "auth-password":
       return "person-type";
     case "person-type":
+      return "personal-data";
+    case "personal-data":
       return "documents";
     case "documents":
       return "confirm";
     case "confirm":
-      return "business";
+      // Giro is chosen on the confirm step now (BR-020 block check here).
+      return isGiroBlocked(data.giroId) ? "blocked" : "business";
     case "business":
-      if (isGiroBlocked(data.giroId)) return "blocked";
-      if (classifyLevel(data) === "FUERA_DE_RANGO") return "high-volume-redirect";
-      return "activated";
+      return classifyLevel(data) === "FUERA_DE_RANGO"
+        ? "high-volume-redirect"
+        : "activated";
     case "activated":
       return "status-enviado";
     default:

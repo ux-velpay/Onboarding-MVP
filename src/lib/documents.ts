@@ -94,8 +94,16 @@ export function extractedData(
   switch (docId) {
     case "ine":
       return personType === "PM"
-        ? { representanteLegal: "David Alejandro Gómez" }
-        : { nombreCompleto: "Ana María Rodríguez López" };
+        ? {
+            nombres: "David Alejandro",
+            apellidoPaterno: "Gómez",
+            apellidoMaterno: "Ruiz",
+          }
+        : {
+            nombres: "Ana María",
+            apellidoPaterno: "Rodríguez",
+            apellidoMaterno: "López",
+          };
     case "comprobante":
       return { domicilioFiscal: "Calle Primavera 22, Col. Del Valle, CDMX" };
     case "estado_cuenta":

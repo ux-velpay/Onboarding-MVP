@@ -79,6 +79,11 @@ export interface OnboardingData {
   hasRfc: boolean | null;
   doesBusinessActivity: boolean | null; // PF only
 
+  // Personal / representative name (split)
+  nombres: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+
   // Step 2 — tax data
   rfc: string;
   razonSocial: string;
@@ -86,6 +91,9 @@ export interface OnboardingData {
   regimenFiscal: string;
   domicilioFiscal: string;
   representanteLegal: string;
+
+  // Giro / MCC (catalog)
+  mcc: string;
 
   // Step 3 — business data
   businessName: string;
@@ -124,6 +132,10 @@ export interface OnboardingData {
 export function emptyOnboardingData(): OnboardingData {
   return {
     accountContact: "",
+    nombres: "",
+    apellidoPaterno: "",
+    apellidoMaterno: "",
+    mcc: "",
     personType: null,
     hasRfc: null,
     doesBusinessActivity: null,
