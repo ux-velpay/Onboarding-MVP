@@ -13,7 +13,6 @@ import { ConfirmData } from "./steps/ConfirmData";
 import { Business } from "./steps/Business";
 import { BlockedState } from "./steps/BlockedState";
 import { HighVolumeRedirect } from "./steps/HighVolumeRedirect";
-import { Complete } from "./steps/Complete";
 import {
   StatusAprobado,
   StatusEnviado,
@@ -25,14 +24,13 @@ const SCREENS: Record<Screen, () => React.JSX.Element> = {
   "auth-email": AuthEmail,
   "auth-otp": AuthOtp,
   "auth-password": AuthPassword,
-  activated: Activated,
   "person-type": PersonType,
   documents: Documents,
   confirm: ConfirmData,
   business: Business,
   blocked: BlockedState,
   "high-volume-redirect": HighVolumeRedirect,
-  complete: Complete,
+  activated: Activated,
   "status-enviado": StatusEnviado,
   "status-info-adicional": StatusInfoAdicional,
   "status-aprobado": StatusAprobado,

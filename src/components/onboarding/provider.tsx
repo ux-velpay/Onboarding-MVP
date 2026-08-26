@@ -12,7 +12,7 @@ import {
 import { nextScreen, type Screen } from "@/lib/flow";
 import { emptyOnboardingData, type OnboardingData } from "@/lib/types";
 
-const STORAGE_KEY = "velpay-onboarding-v4";
+const STORAGE_KEY = "velpay-onboarding-v5";
 
 interface PersistedState {
   screen: Screen;

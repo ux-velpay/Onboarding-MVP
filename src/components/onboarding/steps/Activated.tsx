@@ -1,12 +1,14 @@
 "use client";
 
 import { VelpayLogo } from "@/components/ui/VelpayLogo";
-import { AlertCircle, ExternalLink } from "@/components/ui/icons";
+import { AlertCircle, AlertTriangle, ExternalLink } from "@/components/ui/icons";
+import { hasPendingCorporateDocs } from "@/lib/documents";
 import { SplitLayout } from "../SplitLayout";
 import { useOnboarding } from "../provider";
 
 export function Activated() {
-  const { next } = useOnboarding();
+  const { data, next } = useOnboarding();
+  const pending = hasPendingCorporateDocs(data);
 
   return (
     <SplitLayout align="center">
@@ -44,6 +46,19 @@ export function Activated() {
             </div>
           </div>
         </div>
+
+        {pending && (
+          <div className="mt-4 rounded-[16px] bg-alert-bg p-4">
+            <div className="mb-1 flex items-center gap-2 text-[14px] font-semibold text-alert">
+              <AlertTriangle width={16} height={16} />
+              Documentos corporativos pendientes
+            </div>
+            <p className="text-[13px] leading-relaxed text-ink-2">
+              Como Persona Moral, deberás subir tu acta constitutiva y poder notarial
+              desde el portal de documentos para operar sin restricciones.
+            </p>
+          </div>
+        )}
 
         <div className="mt-8">
           <VelpayLogo />

@@ -18,14 +18,13 @@ const GROUPS: { title: string; items: { id: Screen; label: string }[] }[] = [
   {
     title: "Registro",
     items: [
-      { id: "activated", label: "¡Felicidades! (activada)" },
       { id: "person-type", label: "Tipo de persona" },
       { id: "documents", label: "Documentos (escaneo)" },
       { id: "confirm", label: "Confirmar datos" },
       { id: "business", label: "Sobre tu negocio" },
       { id: "blocked", label: "Giro bloqueado" },
       { id: "high-volume-redirect", label: "Redirección > $8k" },
-      { id: "complete", label: "Completado" },
+      { id: "activated", label: "¡Felicidades! (activada)" },
     ],
   },
   {

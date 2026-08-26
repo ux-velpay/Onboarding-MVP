@@ -8,14 +8,13 @@ export type Screen =
   | "auth-email"
   | "auth-otp"
   | "auth-password"
-  | "activated"
   | "person-type"
   | "documents"
   | "confirm"
   | "business"
   | "blocked"
   | "high-volume-redirect"
-  | "complete"
+  | "activated"
   | "status-enviado"
   | "status-info-adicional"
   | "status-aprobado"
@@ -46,8 +45,6 @@ export function nextScreen(screen: Screen, data: OnboardingData): Screen {
     case "auth-otp":
       return "auth-password";
     case "auth-password":
-      return "activated";
-    case "activated":
       return "person-type";
     case "person-type":
       return "documents";
@@ -58,8 +55,8 @@ export function nextScreen(screen: Screen, data: OnboardingData): Screen {
     case "business":
       if (isGiroBlocked(data.giroId)) return "blocked";
       if (classifyLevel(data) === "FUERA_DE_RANGO") return "high-volume-redirect";
-      return "complete";
-    case "complete":
+      return "activated";
+    case "activated":
       return "status-enviado";
     default:
       return screen;
