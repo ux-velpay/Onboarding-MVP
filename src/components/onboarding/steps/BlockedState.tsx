@@ -25,7 +25,7 @@ export function BlockedState() {
         {reason}
       </p>
       <div className="mt-8 space-y-4">
-        <Button fullWidth onClick={() => go("activity")}>
+        <Button fullWidth onClick={() => go("business")}>
           Elegir otra actividad
         </Button>
         <button

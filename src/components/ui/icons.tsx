@@ -141,6 +141,33 @@ export const BadgeCheck = (p: IconProps) => (
   </svg>
 );
 
+export const Camera = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+    <circle cx="12" cy="13" r="3" />
+  </svg>
+);
+
+export const Home = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" />
+  </svg>
+);
+
+export const Landmark = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M3 21h18M3 10h18M12 3 3 8h18l-9-5zM5 10v11M9 10v11M15 10v11M19 10v11" />
+  </svg>
+);
+
+export const IdCard = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <rect x="2" y="5" width="20" height="14" rx="2" />
+    <circle cx="8" cy="11" r="2" />
+    <path d="M14 9h4M14 13h4M5 16h6" />
+  </svg>
+);
+
 export const CreditCard = (p: IconProps) => (
   <svg {...base} {...p}>
     <rect x="2" y="5" width="20" height="14" rx="2" />

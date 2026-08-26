@@ -5,19 +5,11 @@ import { useOnboarding } from "./provider";
 import { DemoNav } from "./DemoNav";
 import { Welcome } from "./steps/Welcome";
 import { PersonType } from "./steps/PersonType";
-import { TaxData } from "./steps/TaxData";
-import { RfcError } from "./steps/RfcError";
-import { SinRfcRoute } from "./steps/SinRfcRoute";
-import { BusinessInfo } from "./steps/BusinessInfo";
-import { BankData } from "./steps/BankData";
-import { BusinessActivity } from "./steps/BusinessActivity";
+import { Documents } from "./steps/Documents";
+import { ConfirmData } from "./steps/ConfirmData";
+import { Business } from "./steps/Business";
 import { BlockedState } from "./steps/BlockedState";
-import { ExpectedVolume } from "./steps/ExpectedVolume";
 import { HighVolumeRedirect } from "./steps/HighVolumeRedirect";
-import { PaymentChannel } from "./steps/PaymentChannel";
-import { TnpExtraInfo } from "./steps/TnpExtraInfo";
-import { DocumentChecklist } from "./steps/DocumentChecklist";
-import { DocumentUpload } from "./steps/DocumentUpload";
 import { Complete } from "./steps/Complete";
 import {
   StatusAprobado,
@@ -29,19 +21,11 @@ import {
 const SCREENS: Record<Screen, () => React.JSX.Element> = {
   welcome: Welcome,
   "person-type": PersonType,
-  "tax-data": TaxData,
-  "rfc-error": RfcError,
-  "sin-rfc-route": SinRfcRoute,
-  "business-info": BusinessInfo,
-  "bank-data": BankData,
-  activity: BusinessActivity,
+  documents: Documents,
+  confirm: ConfirmData,
+  business: Business,
   blocked: BlockedState,
-  volume: ExpectedVolume,
   "high-volume-redirect": HighVolumeRedirect,
-  channel: PaymentChannel,
-  "tnp-extra-info": TnpExtraInfo,
-  checklist: DocumentChecklist,
-  upload: DocumentUpload,
   complete: Complete,
   "status-enviado": StatusEnviado,
   "status-info-adicional": StatusInfoAdicional,
