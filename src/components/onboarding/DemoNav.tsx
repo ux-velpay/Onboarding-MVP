@@ -8,7 +8,15 @@ import { useOnboarding } from "./provider";
 
 const GROUPS: { title: string; items: { id: Screen; label: string }[] }[] = [
   {
-    title: "Captura",
+    title: "Crear cuenta",
+    items: [
+      { id: "auth-email", label: "Correo / teléfono" },
+      { id: "auth-otp", label: "Código (OTP)" },
+      { id: "auth-password", label: "Contraseña" },
+    ],
+  },
+  {
+    title: "Registro",
     items: [
       { id: "welcome", label: "Bienvenida" },
       { id: "person-type", label: "Tipo de persona" },

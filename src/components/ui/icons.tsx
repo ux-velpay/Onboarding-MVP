@@ -141,6 +141,20 @@ export const BadgeCheck = (p: IconProps) => (
   </svg>
 );
 
+export const Eye = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+export const EyeOff = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.5 0 10 7 10 7a13.2 13.2 0 0 1-1.67 2.44M6.1 6.1A13.3 13.3 0 0 0 2 11s3.5 7 10 7a9.1 9.1 0 0 0 4-.9" />
+    <path d="M9.9 9.9a3 3 0 1 0 4.2 4.2M2 2l20 20" />
+  </svg>
+);
+
 export const Camera = (p: IconProps) => (
   <svg {...base} {...p}>
     <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />

@@ -29,7 +29,7 @@ export function Welcome() {
         title="Vamos a registrar tu negocio"
         subtitle="Necesitaremos algunos datos y documentos para completar tu solicitud. El proceso tomará menos de 10 minutos."
       />
-      <StepBar current={1} total={TOTAL_STEPS} />
+      <StepBar current={3} total={TOTAL_STEPS} />
     </SplitLayout>
   );
 }

@@ -71,6 +71,9 @@ export type RfcCheck =
   | { status: "missing" };
 
 export interface OnboardingData {
+  // Account creation (pre-registration)
+  accountContact: string; // email or phone used to create the account
+
   // Step 1 — person type
   personType: PersonType | null;
   hasRfc: boolean | null;
@@ -120,6 +123,7 @@ export interface OnboardingData {
 
 export function emptyOnboardingData(): OnboardingData {
   return {
+    accountContact: "",
     personType: null,
     hasRfc: null,
     doesBusinessActivity: null,

@@ -3,6 +3,9 @@
 import type { Screen } from "@/lib/flow";
 import { useOnboarding } from "./provider";
 import { DemoNav } from "./DemoNav";
+import { AuthEmail } from "./steps/AuthEmail";
+import { AuthOtp } from "./steps/AuthOtp";
+import { AuthPassword } from "./steps/AuthPassword";
 import { Welcome } from "./steps/Welcome";
 import { PersonType } from "./steps/PersonType";
 import { Documents } from "./steps/Documents";
@@ -19,6 +22,9 @@ import {
 } from "./steps/StatusScreens";
 
 const SCREENS: Record<Screen, () => React.JSX.Element> = {
+  "auth-email": AuthEmail,
+  "auth-otp": AuthOtp,
+  "auth-password": AuthPassword,
   welcome: Welcome,
   "person-type": PersonType,
   documents: Documents,

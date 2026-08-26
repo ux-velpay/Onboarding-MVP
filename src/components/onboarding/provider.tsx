@@ -12,7 +12,7 @@ import {
 import { nextScreen, type Screen } from "@/lib/flow";
 import { emptyOnboardingData, type OnboardingData } from "@/lib/types";
 
-const STORAGE_KEY = "velpay-onboarding-v2";
+const STORAGE_KEY = "velpay-onboarding-v3";
 
 interface PersistedState {
   screen: Screen;
@@ -37,7 +37,7 @@ interface OnboardingContextValue {
 const OnboardingContext = createContext<OnboardingContextValue | null>(null);
 
 export function OnboardingProvider({ children }: { children: React.ReactNode }) {
-  const [screen, setScreen] = useState<Screen>("welcome");
+  const [screen, setScreen] = useState<Screen>("auth-email");
   const [history, setHistory] = useState<Screen[]>([]);
   const [data, setData] = useState<OnboardingData>(emptyOnboardingData);
   const [hydrated, setHydrated] = useState(false);
@@ -108,7 +108,7 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
   const reset = useCallback(() => {
     setData(emptyOnboardingData());
     setHistory([]);
-    setScreen("welcome");
+    setScreen("auth-email");
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch {

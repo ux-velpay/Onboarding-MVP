@@ -1,9 +1,13 @@
 // Wizard navigation for the optimized scan-first flow.
+// The journey is: create account (3) → business registration (4) = 7 steps.
 
 import { classifyLevel, isGiroBlocked } from "./rules-engine";
 import type { OnboardingData } from "./types";
 
 export type Screen =
+  | "auth-email"
+  | "auth-otp"
+  | "auth-password"
   | "welcome"
   | "person-type"
   | "documents"
@@ -17,8 +21,11 @@ export type Screen =
   | "status-aprobado"
   | "status-rechazado";
 
-/** Capture steps shown on the progress bar. */
+/** Steps shown on the continuous progress bar (account + registration). */
 export const CAPTURE_STEPS: Screen[] = [
+  "auth-email",
+  "auth-otp",
+  "auth-password",
   "person-type",
   "documents",
   "confirm",
@@ -34,6 +41,12 @@ export function stepNumber(screen: Screen): number | null {
 
 export function nextScreen(screen: Screen, data: OnboardingData): Screen {
   switch (screen) {
+    case "auth-email":
+      return "auth-otp";
+    case "auth-otp":
+      return "auth-password";
+    case "auth-password":
+      return "welcome";
     case "welcome":
       return "person-type";
     case "person-type":
