@@ -6,7 +6,7 @@ import { DemoNav } from "./DemoNav";
 import { AuthEmail } from "./steps/AuthEmail";
 import { AuthOtp } from "./steps/AuthOtp";
 import { AuthPassword } from "./steps/AuthPassword";
-import { Welcome } from "./steps/Welcome";
+import { Activated } from "./steps/Activated";
 import { PersonType } from "./steps/PersonType";
 import { Documents } from "./steps/Documents";
 import { ConfirmData } from "./steps/ConfirmData";
@@ -25,7 +25,7 @@ const SCREENS: Record<Screen, () => React.JSX.Element> = {
   "auth-email": AuthEmail,
   "auth-otp": AuthOtp,
   "auth-password": AuthPassword,
-  welcome: Welcome,
+  activated: Activated,
   "person-type": PersonType,
   documents: Documents,
   confirm: ConfirmData,

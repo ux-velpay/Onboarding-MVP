@@ -18,7 +18,7 @@ const GROUPS: { title: string; items: { id: Screen; label: string }[] }[] = [
   {
     title: "Registro",
     items: [
-      { id: "welcome", label: "Bienvenida" },
+      { id: "activated", label: "¡Felicidades! (activada)" },
       { id: "person-type", label: "Tipo de persona" },
       { id: "documents", label: "Documentos (escaneo)" },
       { id: "confirm", label: "Confirmar datos" },

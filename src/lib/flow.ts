@@ -8,7 +8,7 @@ export type Screen =
   | "auth-email"
   | "auth-otp"
   | "auth-password"
-  | "welcome"
+  | "activated"
   | "person-type"
   | "documents"
   | "confirm"
@@ -46,8 +46,8 @@ export function nextScreen(screen: Screen, data: OnboardingData): Screen {
     case "auth-otp":
       return "auth-password";
     case "auth-password":
-      return "welcome";
-    case "welcome":
+      return "activated";
+    case "activated":
       return "person-type";
     case "person-type":
       return "documents";
