@@ -12,7 +12,6 @@ import { Documents } from "./steps/Documents";
 import { CrossCheck } from "./steps/CrossCheck";
 import { ConfirmData } from "./steps/ConfirmData";
 import { Business } from "./steps/Business";
-import { BlockedState } from "./steps/BlockedState";
 import { HighVolumeRedirect } from "./steps/HighVolumeRedirect";
 import {
   StatusAprobado,
@@ -30,7 +29,6 @@ const SCREENS: Record<Screen, () => React.JSX.Element> = {
   "cross-check": CrossCheck,
   confirm: ConfirmData,
   business: Business,
-  blocked: BlockedState,
   "high-volume-redirect": HighVolumeRedirect,
   activated: Activated,
   "status-enviado": StatusEnviado,

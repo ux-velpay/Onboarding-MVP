@@ -23,7 +23,6 @@ const GROUPS: { title: string; items: { id: Screen; label: string }[] }[] = [
       { id: "cross-check", label: "Validación cruzada" },
       { id: "confirm", label: "Confirmar datos" },
       { id: "business", label: "Sobre tu negocio" },
-      { id: "blocked", label: "Giro bloqueado" },
       { id: "high-volume-redirect", label: "Redirección > $8k" },
       { id: "activated", label: "¡Felicidades! (activada)" },
     ],

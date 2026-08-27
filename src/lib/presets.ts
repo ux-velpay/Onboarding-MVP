@@ -59,6 +59,27 @@ export const PRESETS: Preset[] = [
     },
   },
   {
+    id: "giroprohibido",
+    label: "Giro en revisión (Mesa de Control)",
+    data: {
+      personType: "PF",
+      nombres: "Laura",
+      apellidoPaterno: "Méndez",
+      apellidoMaterno: "Soto",
+      rfc: "MESL900101AB1",
+      regimenFiscal:
+        "612 - Personas Físicas con Actividades Empresariales y Profesionales",
+      domicilioFiscal: "Calle Roble 8, Col. Centro, CDMX",
+      bank: "Banorte",
+      clabe: "072180000099998888",
+      // Prohibited giro → handled internally (held for Mesa de Control).
+      giroId: "7995",
+      mcc: "5399 - Comercio general",
+      volumeRangeId: "r2",
+      documentsDone: { ...SCANNED, rfc_constancia: true },
+    },
+  },
+  {
     id: "sinrfc",
     label: "Sin CSF (RFC no extraído)",
     data: {

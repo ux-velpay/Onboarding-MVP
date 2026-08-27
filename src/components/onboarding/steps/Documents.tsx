@@ -43,6 +43,8 @@ export function Documents() {
   const { data, update, next } = useOnboarding();
   const docs = documentsFor(data);
   const [scanning, setScanning] = useState<Record<string, boolean>>({});
+  const [errored, setErrored] = useState<Record<string, boolean>>({});
+  const [attempts, setAttempts] = useState<Record<string, number>>({});
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
@@ -55,9 +57,18 @@ export function Documents() {
   function scan(doc: DocDef, side?: "frente" | "reverso") {
     const key = side ? `${doc.id}_${side}` : doc.id;
     if (done(key) || scanning[key]) return;
+    const attempt = (attempts[key] ?? 0) + 1;
+    setAttempts((a) => ({ ...a, [key]: attempt }));
+    setErrored((e) => ({ ...e, [key]: false }));
     setScanning((s) => ({ ...s, [key]: true }));
     const t = window.setTimeout(() => {
       setScanning((s) => ({ ...s, [key]: false }));
+      // Deterministic demo: the comprobante fails to read on the first try
+      // (blurry image) so the re-upload flow can be shown.
+      if (doc.id === "comprobante" && attempt === 1) {
+        setErrored((e) => ({ ...e, [key]: true }));
+        return;
+      }
       const patch = { ...data.documentsDone, [key]: true } as Record<string, boolean>;
       // INE completes only when both sides are captured.
       let extractedFor: DocId | null = doc.id;
@@ -107,7 +118,11 @@ export function Documents() {
               key={doc.id}
               className={cn(
                 "rounded-[14px] border p-4 transition-colors",
-                isDone ? "border-success/40 bg-success-bg/40" : "border-line bg-white"
+                errored[doc.id]
+                  ? "border-danger/50 bg-danger-bg/20"
+                  : isDone
+                    ? "border-success/40 bg-success-bg/40"
+                    : "border-line bg-white"
               )}
             >
               <div className="flex items-start gap-3.5">
@@ -128,8 +143,17 @@ export function Documents() {
                       </span>
                     )}
                   </div>
-                  <p className="mt-0.5 text-[13px] leading-snug text-ink-3">
-                    {isDone ? "Documento detectado y datos extraídos ✓" : doc.desc}
+                  <p
+                    className={cn(
+                      "mt-0.5 text-[13px] leading-snug",
+                      errored[doc.id] ? "text-danger" : "text-ink-3"
+                    )}
+                  >
+                    {errored[doc.id]
+                      ? "No pudimos leer el documento (imagen borrosa). Vuelve a cargarlo."
+                      : isDone
+                        ? "Documento detectado y datos extraídos ✓"
+                        : doc.desc}
                   </p>
 
                   {/* Actions */}
@@ -166,6 +190,16 @@ export function Documents() {
                             );
                           })}
                         </div>
+                      ) : errored[doc.id] ? (
+                        <button
+                          type="button"
+                          onClick={() => scan(doc)}
+                          disabled={isScanning}
+                          className="focus-ring inline-flex items-center gap-2 rounded-[9px] border border-danger/50 bg-white px-3.5 py-2 text-[13px] font-medium text-danger transition-colors hover:bg-danger-bg/40"
+                        >
+                          {isScanning ? <Spinner /> : <Upload width={15} height={15} />}
+                          {isScanning ? "Escaneando…" : "Volver a cargar"}
+                        </button>
                       ) : (
                         <div className="flex flex-wrap gap-2">
                           <button

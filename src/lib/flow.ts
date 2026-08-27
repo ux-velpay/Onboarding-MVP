@@ -1,7 +1,7 @@
 // Wizard navigation for the optimized scan-first flow.
 // The journey is: create account (3) → business registration (4) = 7 steps.
 
-import { classifyLevel, isGiroBlocked } from "./rules-engine";
+import { classifyLevel } from "./rules-engine";
 import type { OnboardingData } from "./types";
 
 export type Screen =
@@ -13,7 +13,6 @@ export type Screen =
   | "cross-check"
   | "confirm"
   | "business"
-  | "blocked"
   | "high-volume-redirect"
   | "activated"
   | "status-enviado"
@@ -55,9 +54,12 @@ export function nextScreen(screen: Screen, data: OnboardingData): Screen {
     case "cross-check":
       return "confirm";
     case "confirm":
-      // Giro is chosen on the confirm step now (BR-020 block check here).
-      return isGiroBlocked(data.giroId) ? "blocked" : "business";
+      return "business";
     case "business":
+      // Prohibited giro is handled internally (never a hard block for the
+      // merchant): the account is created but held for Mesa de Control — that
+      // neutral state is shown on the "activated" screen. Volume > $8k still
+      // redirects to the Assistant.
       return classifyLevel(data) === "FUERA_DE_RANGO"
         ? "high-volume-redirect"
         : "activated";
