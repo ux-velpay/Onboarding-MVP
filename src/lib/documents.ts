@@ -1,122 +1,120 @@
 // Document definitions for the scan-first onboarding flow.
-// Each document, once scanned, "extracts" data that pre-fills the confirm step
-// (simulated OCR for the prototype).
+// Documents depend on the scenario (PF con RFC / PM con RFC / PF sin RFC).
+// Once scanned, each document "extracts" data (simulated OCR) that feeds the
+// cross-validation and confirm steps.
 
-import type { OnboardingData, PersonType } from "./types";
+import type { OnboardingData } from "./types";
 
 export type DocId =
   | "ine"
   | "comprobante"
   | "estado_cuenta"
-  | "rfc_constancia"
-  | "acta"
-  | "poder";
+  | "rfc_constancia" // CSF — Constancia de Situación Fiscal
+  | "acta";
+
+export type Scenario = "PF_RFC" | "PM_RFC" | "PF_SIN_RFC";
+
+export function scenarioOf(data: OnboardingData): Scenario {
+  if (data.personType === "PM") return "PM_RFC";
+  if (data.hasRfc === false) return "PF_SIN_RFC";
+  return "PF_RFC";
+}
 
 export interface DocDef {
   id: DocId;
   title: string;
   desc: string;
   required: boolean;
-  scope: "all" | "PM";
   icon: "id" | "home" | "bank" | "file" | "corporate";
-  /** INE needs both sides. */
   twoSided?: boolean;
-  optionalNote?: string;
 }
 
-export const DOCUMENTS: DocDef[] = [
-  {
-    id: "ine",
-    title: "Identificación oficial (INE)",
-    desc: "Frente y reverso de tu credencial vigente",
-    required: true,
-    scope: "all",
-    icon: "id",
-    twoSided: true,
-  },
-  {
-    id: "comprobante",
-    title: "Comprobante de domicilio",
-    desc: "No mayor a 3 meses (recibo de luz, agua, etc.)",
-    required: true,
-    scope: "all",
-    icon: "home",
-  },
-  {
-    id: "estado_cuenta",
-    title: "Estado de cuenta",
-    desc: "Donde se abonarán tus ventas",
-    required: true,
-    scope: "all",
-    icon: "bank",
-  },
-  {
-    id: "rfc_constancia",
-    title: "RFC / Constancia de Situación Fiscal",
-    desc: "Acelera tu validación fiscal",
-    required: false,
-    scope: "all",
-    icon: "file",
-    optionalNote: "Opcional · puedes subirla después",
-  },
-  {
-    id: "acta",
-    title: "Acta constitutiva",
-    desc: "Documento de constitución de la empresa",
-    required: false,
-    scope: "PM",
-    icon: "corporate",
-    optionalNote: "Opcional · se puede completar después",
-  },
-  {
-    id: "poder",
-    title: "Poder notarial",
-    desc: "Del representante legal",
-    required: false,
-    scope: "PM",
-    icon: "corporate",
-    optionalNote: "Opcional · se puede completar después",
-  },
-];
+/** Build the initial document list for the merchant's scenario (§5.1–5.3). */
+export function documentsFor(data: OnboardingData): DocDef[] {
+  const sc = scenarioOf(data);
+  const docs: DocDef[] = [];
 
-export function documentsFor(personType: PersonType | null): DocDef[] {
-  return DOCUMENTS.filter((d) => d.scope === "all" || d.scope === personType);
+  // Identity — INE, or representative's INE (PM), or passport (PF sin RFC).
+  if (sc === "PF_SIN_RFC") {
+    docs.push({
+      id: "ine",
+      title: "Identificación tipo pasaporte",
+      desc: "Pasaporte vigente (reemplaza al RFC, BR-019)",
+      required: true,
+      icon: "id",
+    });
+  } else {
+    docs.push({
+      id: "ine",
+      title: sc === "PM_RFC" ? "INE del representante legal" : "Identificación oficial (INE)",
+      desc: "Frente y reverso de la credencial vigente",
+      required: true,
+      icon: "id",
+      twoSided: true,
+    });
+  }
+
+  docs.push(
+    {
+      id: "comprobante",
+      title: "Comprobante de domicilio",
+      desc: "No mayor a 3 meses (recibo de luz, agua, etc.)",
+      required: true,
+      icon: "home",
+    },
+    {
+      id: "estado_cuenta",
+      title: "Estado de cuenta",
+      desc: "Donde Banorte abonará tus ventas",
+      required: true,
+      icon: "bank",
+    }
+  );
+
+  // CSF — required for con-RFC scenarios; NOT requested for PF sin RFC.
+  if (sc !== "PF_SIN_RFC") {
+    docs.push({
+      id: "rfc_constancia",
+      title: "Constancia de Situación Fiscal (CSF)",
+      desc: "Valida RFC, régimen fiscal y nombre",
+      required: true,
+      icon: "file",
+    });
+  }
+
+  // Persona Moral — Acta Constitutiva, optional (can be uploaded in the Assistant).
+  if (sc === "PM_RFC") {
+    docs.push({
+      id: "acta",
+      title: "Acta constitutiva",
+      desc: "Opcional · puedes subirla después en el Assistant",
+      required: false,
+      icon: "corporate",
+    });
+  }
+
+  return docs;
 }
 
 /**
- * Simulated OCR: what each document pre-fills when scanned. Returns a partial
- * of OnboardingData so the confirm step shows real, editable values.
+ * Simulated OCR: what each document pre-fills when scanned.
  */
 export function extractedData(
   docId: DocId,
-  personType: PersonType | null
+  data: OnboardingData
 ): Partial<OnboardingData> {
+  const isPM = data.personType === "PM";
   switch (docId) {
     case "ine":
-      return personType === "PM"
-        ? {
-            nombres: "David Alejandro",
-            apellidoPaterno: "Gómez",
-            apellidoMaterno: "Ruiz",
-          }
-        : {
-            nombres: "Ana María",
-            apellidoPaterno: "Rodríguez",
-            apellidoMaterno: "López",
-          };
+      return isPM
+        ? { nombres: "David Alejandro", apellidoPaterno: "Gómez", apellidoMaterno: "Ruiz" }
+        : { nombres: "Ana María", apellidoPaterno: "Rodríguez", apellidoMaterno: "López" };
     case "comprobante":
       return { domicilioFiscal: "Calle Primavera 22, Col. Del Valle, CDMX" };
     case "estado_cuenta":
-      return {
-        bank: "Banorte",
-        clabe: "072180000012345678",
-        accountHolder:
-          personType === "PM"
-            ? "Velpay Tecnologías S.A. de C.V."
-            : "Ana María Rodríguez López",
-      };
+      return { bank: "Banorte", clabe: "072180000012345678" };
     case "rfc_constancia":
-      return personType === "PM"
+      return isPM
         ? {
             rfc: "VTE220412KJ9",
             razonSocial: "Velpay Tecnologías S.A. de C.V.",
@@ -132,18 +130,14 @@ export function extractedData(
   }
 }
 
-/** Required docs that gate the "Continuar" button on the documents step. */
-export function requiredDocsDone(
-  personType: PersonType | null,
-  done: Record<string, boolean>
-): boolean {
-  return documentsFor(personType)
+export function requiredDocsDone(data: OnboardingData): boolean {
+  return documentsFor(data)
     .filter((d) => d.required)
-    .every((d) => done[d.id]);
+    .every((d) => data.documentsDone[d.id]);
 }
 
-/** PM that skipped acta/poder — expediente proceeds but is flagged (soft-block). */
+/** PM that skipped the Acta — proceeds but is flagged (soft-block). */
 export function hasPendingCorporateDocs(data: OnboardingData): boolean {
   if (data.personType !== "PM") return false;
-  return !data.documentsDone.acta || !data.documentsDone.poder;
+  return !data.documentsDone.acta;
 }

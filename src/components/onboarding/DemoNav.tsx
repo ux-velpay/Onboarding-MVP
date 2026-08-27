@@ -19,8 +19,8 @@ const GROUPS: { title: string; items: { id: Screen; label: string }[] }[] = [
     title: "Registro",
     items: [
       { id: "person-type", label: "Tipo de persona" },
-      { id: "personal-data", label: "Datos personales" },
       { id: "documents", label: "Documentos (escaneo)" },
+      { id: "cross-check", label: "Validación cruzada" },
       { id: "confirm", label: "Confirmar datos" },
       { id: "business", label: "Sobre tu negocio" },
       { id: "blocked", label: "Giro bloqueado" },

@@ -9,8 +9,8 @@ export type Screen =
   | "auth-otp"
   | "auth-password"
   | "person-type"
-  | "personal-data"
   | "documents"
+  | "cross-check"
   | "confirm"
   | "business"
   | "blocked"
@@ -27,8 +27,8 @@ export const CAPTURE_STEPS: Screen[] = [
   "auth-otp",
   "auth-password",
   "person-type",
-  "personal-data",
   "documents",
+  "cross-check",
   "confirm",
   "business",
 ];
@@ -49,10 +49,10 @@ export function nextScreen(screen: Screen, data: OnboardingData): Screen {
     case "auth-password":
       return "person-type";
     case "person-type":
-      return "personal-data";
-    case "personal-data":
       return "documents";
     case "documents":
+      return "cross-check";
+    case "cross-check":
       return "confirm";
     case "confirm":
       // Giro is chosen on the confirm step now (BR-020 block check here).

@@ -41,7 +41,7 @@ function Spinner() {
 
 export function Documents() {
   const { data, update, next } = useOnboarding();
-  const docs = documentsFor(data.personType);
+  const docs = documentsFor(data);
   const [scanning, setScanning] = useState<Record<string, boolean>>({});
   const timers = useRef<number[]>([]);
 
@@ -68,13 +68,13 @@ export function Documents() {
       }
       update({
         documentsDone: patch,
-        ...(extractedFor ? extractedData(extractedFor, data.personType) : {}),
+        ...(extractedFor ? extractedData(extractedFor, data) : {}),
       });
     }, 950);
     timers.current.push(t);
   }
 
-  const canContinue = requiredDocsDone(data.personType, data.documentsDone);
+  const canContinue = requiredDocsDone(data);
 
   return (
     <SplitLayout
@@ -199,9 +199,8 @@ export function Documents() {
 
       {data.personType === "PM" && (
         <p className="mt-4 rounded-[12px] bg-surface p-4 text-[13px] leading-relaxed text-ink-2">
-          El acta constitutiva y el poder notarial son opcionales aquí. Si no los
-          tienes a la mano, tu registro continúa y podrás completarlos más adelante
-          desde el portal de documentos.
+          El acta constitutiva es opcional aquí. Si no la tienes a la mano, tu registro
+          continúa y podrás subirla más adelante desde el Assistant.
         </p>
       )}
     </SplitLayout>
