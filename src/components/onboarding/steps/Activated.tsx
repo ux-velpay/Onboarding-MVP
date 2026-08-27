@@ -35,7 +35,7 @@ export function Activated() {
     return (
       <SplitLayout align="center">
         <div className="w-full max-w-[460px]">
-          <h2 className="text-[26px] font-semibold leading-tight tracking-tight text-primary-dark">
+          <h2 className="text-[26px] font-medium leading-tight tracking-tight text-primary-dark">
             Estamos revisando la información de tu negocio
           </h2>
           <div className="mt-8 rounded-[16px] border border-line bg-surface p-5">
@@ -61,7 +61,7 @@ export function Activated() {
   return (
     <SplitLayout align="center">
       <div className="w-full max-w-[460px]">
-        <h2 className="text-[26px] font-semibold leading-tight tracking-tight text-primary-dark">
+        <h2 className="text-[26px] font-medium leading-tight tracking-tight text-primary-dark">
           ¡Felicidades! ya puedes empezar a transaccionar en tu terminal.
         </h2>
 

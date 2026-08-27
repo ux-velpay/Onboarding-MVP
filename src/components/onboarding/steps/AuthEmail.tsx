@@ -35,7 +35,7 @@ export function AuthEmail() {
         </Button>
         <p className="text-[14px] text-ink-2">
           ¿Ya estás registrado?{" "}
-          <span className="font-semibold text-primary underline">Inicia sesión aquí</span>
+          <span className="font-medium text-primary underline">Inicia sesión aquí</span>
         </p>
       </div>
     </AuthScreen>

@@ -9,6 +9,7 @@ export type DocId =
   | "ine"
   | "comprobante"
   | "estado_cuenta"
+  | "fotos_negocio"
   | "rfc_constancia" // CSF — Constancia de Situación Fiscal (optional)
   | "acta";
 
@@ -39,6 +40,16 @@ export function documentsFor(data: OnboardingData): DocDef[] {
       icon: "bank",
     },
     {
+      id: "fotos_negocio",
+      title: "Fotos del negocio",
+      desc: "Interior y exterior · mínimo 2 fotos",
+      required: true,
+      icon: "photo",
+      twoSided: true,
+      sides: ["Interior", "Exterior"],
+      photos: true,
+    },
+    {
       id: "rfc_constancia",
       title: "Constancia de Situación Fiscal (CSF)",
       desc: "Opcional · de aquí extraemos y validamos tu RFC",
@@ -54,6 +65,7 @@ export function documentsFor(data: OnboardingData): DocDef[] {
       desc: "Opcional · puedes subirla después en el Assistant",
       required: false,
       icon: "corporate",
+      uploadOnly: true,
     });
   }
 
@@ -65,8 +77,14 @@ export interface DocDef {
   title: string;
   desc: string;
   required: boolean;
-  icon: "id" | "home" | "bank" | "file" | "corporate";
+  icon: "id" | "home" | "bank" | "file" | "corporate" | "photo";
+  /** Two required captures (INE sides, or business interior/exterior photos). */
   twoSided?: boolean;
+  sides?: [string, string];
+  /** Photo capture ("Tomar foto") instead of document scan. */
+  photos?: boolean;
+  /** Only allow upload (no "Escanear"). */
+  uploadOnly?: boolean;
 }
 
 /**

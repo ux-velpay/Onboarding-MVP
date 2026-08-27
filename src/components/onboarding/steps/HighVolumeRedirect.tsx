@@ -20,7 +20,7 @@ export function HighVolumeRedirect() {
           <button
             type="button"
             onClick={back}
-            className="focus-ring text-[15px] font-semibold text-primary"
+            className="focus-ring text-[15px] font-medium text-primary"
           >
             ← Volver
           </button>

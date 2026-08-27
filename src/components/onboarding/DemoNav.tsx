@@ -55,7 +55,7 @@ export function DemoNav() {
       {open && (
         <div className="mb-3 max-h-[70vh] w-64 overflow-y-auto rounded-[16px] border border-line bg-white p-4 shadow-[var(--shadow-lg)]">
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-[13px] font-semibold text-ink">Vista de diseño</span>
+            <span className="text-[13px] font-medium text-ink">Vista de diseño</span>
             <button
               onClick={reset}
               className="text-[12px] font-medium text-primary hover:underline"
@@ -64,7 +64,7 @@ export function DemoNav() {
             </button>
           </div>
           <div className="mb-3">
-            <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-ink-3">
+            <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-ink-3">
               Datos de ejemplo
             </p>
             <div className="space-y-1.5">
@@ -81,7 +81,7 @@ export function DemoNav() {
           </div>
           {GROUPS.map((g) => (
             <div key={g.title} className="mb-3 last:mb-0">
-              <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-ink-3">
+              <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-ink-3">
                 {g.title}
               </p>
               <div className="space-y-0.5">

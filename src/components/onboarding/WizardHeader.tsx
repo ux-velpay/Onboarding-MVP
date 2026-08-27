@@ -26,7 +26,7 @@ export function WizardHeader({ step, rightLabel }: WizardHeaderProps) {
           onClick={back}
           disabled={!canGoBack}
           className={cn(
-            "focus-ring flex items-center gap-2.5 rounded-full text-[15px] font-semibold text-primary-dark transition-opacity",
+            "focus-ring flex items-center gap-2.5 rounded-full text-[15px] font-medium text-primary-dark transition-opacity",
             !canGoBack && "cursor-default opacity-40"
           )}
         >

@@ -31,6 +31,7 @@ const ICON = {
   bank: Landmark,
   file: FileUp,
   corporate: Building,
+  photo: Camera,
 } as const;
 
 function Spinner() {
@@ -53,9 +54,10 @@ export function Documents() {
     return Boolean(data.documentsDone[key]);
   }
 
-  // Simulate an OCR scan: brief "scanning" state, then mark done + prefill.
-  function scan(doc: DocDef, side?: "frente" | "reverso") {
-    const key = side ? `${doc.id}_${side}` : doc.id;
+  // Simulate an OCR scan / photo capture: brief "scanning" state, then mark
+  // done + prefill. `slot` is 0/1 for the two-capture docs (INE sides, photos).
+  function scan(doc: DocDef, slot?: number) {
+    const key = slot !== undefined ? `${doc.id}_${slot}` : doc.id;
     if (done(key) || scanning[key]) return;
     const attempt = (attempts[key] ?? 0) + 1;
     setAttempts((a) => ({ ...a, [key]: attempt }));
@@ -70,10 +72,10 @@ export function Documents() {
         return;
       }
       const patch = { ...data.documentsDone, [key]: true } as Record<string, boolean>;
-      // INE completes only when both sides are captured.
+      // Two-capture docs complete only when both captures are done.
       let extractedFor: DocId | null = doc.id;
       if (doc.twoSided) {
-        const both = patch[`${doc.id}_frente`] && patch[`${doc.id}_reverso`];
+        const both = patch[`${doc.id}_0`] && patch[`${doc.id}_1`];
         patch[doc.id] = Boolean(both);
         extractedFor = both ? doc.id : null;
       }
@@ -152,7 +154,9 @@ export function Documents() {
                     {errored[doc.id]
                       ? "No pudimos leer el documento (imagen borrosa). Vuelve a cargarlo."
                       : isDone
-                        ? "Documento detectado y datos extraídos ✓"
+                        ? doc.photos
+                          ? "Fotos cargadas ✓"
+                          : "Documento detectado y datos extraídos ✓"
                         : doc.desc}
                   </p>
 
@@ -161,15 +165,15 @@ export function Documents() {
                     <div className="mt-3">
                       {doc.twoSided ? (
                         <div className="flex flex-wrap gap-2">
-                          {(["frente", "reverso"] as const).map((side) => {
-                            const k = `${doc.id}_${side}`;
+                          {(doc.sides ?? ["Frente", "Reverso"]).map((label, i) => {
+                            const k = `${doc.id}_${i}`;
                             const sideDone = done(k);
                             const sideScan = scanning[k];
                             return (
                               <button
-                                key={side}
+                                key={label}
                                 type="button"
-                                onClick={() => scan(doc, side)}
+                                onClick={() => scan(doc, i)}
                                 disabled={sideDone || sideScan}
                                 className={cn(
                                   "focus-ring inline-flex items-center gap-2 rounded-[9px] border px-3 py-2 text-[13px] font-medium transition-colors",
@@ -185,7 +189,7 @@ export function Documents() {
                                 ) : (
                                   <Camera width={15} height={15} />
                                 )}
-                                {side === "frente" ? "Frente" : "Reverso"}
+                                {label}
                               </button>
                             );
                           })}
@@ -202,22 +206,24 @@ export function Documents() {
                         </button>
                       ) : (
                         <div className="flex flex-wrap gap-2">
+                          {!doc.uploadOnly && (
+                            <button
+                              type="button"
+                              onClick={() => scan(doc)}
+                              disabled={isScanning}
+                              className="focus-ring inline-flex items-center gap-2 rounded-[9px] bg-primary-dark px-3.5 py-2 text-[13px] font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-70"
+                            >
+                              {isScanning ? <Spinner /> : <Camera width={15} height={15} />}
+                              {isScanning ? "Escaneando…" : "Escanear"}
+                            </button>
+                          )}
                           <button
                             type="button"
                             onClick={() => scan(doc)}
                             disabled={isScanning}
-                            className="focus-ring inline-flex items-center gap-2 rounded-[9px] bg-primary-dark px-3.5 py-2 text-[13px] font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-70"
+                            className="focus-ring inline-flex items-center gap-2 rounded-[9px] border border-line-strong bg-white px-3.5 py-2 text-[13px] font-medium text-ink transition-colors hover:bg-page disabled:opacity-70"
                           >
-                            {isScanning ? <Spinner /> : <Camera width={15} height={15} />}
-                            {isScanning ? "Escaneando…" : "Escanear"}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => scan(doc)}
-                            disabled={isScanning}
-                            className="focus-ring inline-flex items-center gap-2 rounded-[9px] border border-line-strong bg-white px-3.5 py-2 text-[13px] font-medium text-ink transition-colors hover:bg-page"
-                          >
-                            <Upload width={15} height={15} />
+                            {doc.uploadOnly && isScanning ? <Spinner /> : <Upload width={15} height={15} />}
                             Subir
                           </button>
                         </div>

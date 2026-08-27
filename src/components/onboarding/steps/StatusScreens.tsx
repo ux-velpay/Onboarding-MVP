@@ -31,7 +31,7 @@ export function StatusEnviado() {
         <dl className="space-y-1.5">
           <div>
             <span className="text-ink-3">Estado: </span>
-            <span className="font-semibold text-alert">En revisión por Banorte</span>
+            <span className="font-medium text-alert">En revisión por Banorte</span>
           </div>
           <div>
             <span className="text-ink-3">Fecha: </span>

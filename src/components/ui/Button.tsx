@@ -17,7 +17,7 @@ const variants: Record<Variant, string> = {
   // tertiary → white w/ border
   ghost: "bg-white text-ink border border-line-strong hover:bg-page",
   // text link
-  link: "bg-transparent text-primary hover:text-primary-hover px-0 py-0 h-auto font-semibold",
+  link: "bg-transparent text-primary hover:text-primary-hover px-0 py-0 h-auto font-medium",
 };
 
 export function Button({

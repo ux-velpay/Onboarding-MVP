@@ -26,7 +26,7 @@ export function AuthScreen({ step, children }: { step: number; children: ReactNo
 
 export function AuthTitle({ children }: { children: ReactNode }) {
   return (
-    <h2 className="text-[26px] font-semibold leading-tight tracking-tight text-primary-dark">
+    <h2 className="text-[26px] font-medium leading-tight tracking-tight text-primary-dark">
       {children}
     </h2>
   );

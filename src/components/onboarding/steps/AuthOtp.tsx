@@ -58,7 +58,7 @@ export function AuthOtp() {
             maxLength={1}
             onChange={(e) => setDigit(i, e.target.value)}
             onKeyDown={(e) => onKeyDown(i, e)}
-            className="focus-ring h-16 w-16 rounded-[12px] border border-line bg-white text-center text-[24px] font-semibold text-ink"
+            className="focus-ring h-16 w-16 rounded-[12px] border border-line bg-white text-center text-[24px] font-medium text-ink"
           />
         ))}
       </div>

@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { TextField } from "@/components/ui/TextField";
 import { Check, ChevronDown } from "@/components/ui/icons";
-import { GIROS, MCC_CATALOG, getGiro } from "@/lib/catalogs";
+import { GIROS } from "@/lib/catalogs";
 import { SplitLayout } from "../SplitLayout";
 import { WizardHeader } from "../WizardHeader";
 import { useOnboarding } from "../provider";
@@ -20,33 +20,16 @@ function Detected() {
 
 function SectionTitle({ children }: { children: ReactNode }) {
   return (
-    <h3 className="mb-3 mt-1 text-[13px] font-semibold uppercase tracking-wide text-ink-3">
+    <h3 className="mb-3 mt-1 text-[13px] font-medium uppercase tracking-wide text-ink-3">
       {children}
     </h3>
   );
 }
 
-interface Opt {
-  value: string;
-  label: string;
-}
-
-function CatalogSelect({
-  label,
-  value,
-  placeholder,
-  options,
-  onChange,
-}: {
-  label: ReactNode;
-  value: string;
-  placeholder: string;
-  options: Opt[];
-  onChange: (v: string) => void;
-}) {
+function GiroSelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-[14px] font-medium text-ink">{label}</span>
+      <span className="mb-2 block text-[14px] font-medium text-ink">Giro</span>
       <div className="relative">
         <select
           value={value}
@@ -56,11 +39,11 @@ function CatalogSelect({
           }`}
         >
           <option value="" disabled>
-            {placeholder}
+            Selecciona el giro de tu negocio
           </option>
-          {options.map((o) => (
-            <option key={o.value} value={o.value} className="text-ink">
-              {o.label}
+          {GIROS.map((g) => (
+            <option key={g.id} value={g.id} className="text-ink">
+              {g.label}
             </option>
           ))}
         </select>
@@ -75,16 +58,9 @@ export function ConfirmData() {
   const isPM = data.personType === "PM";
   const d = data.documentsDone;
 
-  function selectGiro(id: string) {
-    const giro = getGiro(id);
-    const mcc = giro
-      ? MCC_CATALOG.find((m) => m.startsWith(giro.mcc)) ?? giro.mcc
-      : "";
-    update({ giroId: id, mcc });
-  }
-
   const complete = Boolean(
     data.giroId &&
+      data.businessName.trim() &&
       (isPM ? data.razonSocial.trim() : data.nombres.trim() && data.apellidoPaterno.trim())
   );
 
@@ -104,19 +80,12 @@ export function ConfirmData() {
       />
 
       <div className="space-y-5">
-        <SectionTitle>{isPM ? "Datos de la empresa" : "Tus datos"}</SectionTitle>
-        {isPM && (
-          <TextField
-            label={<span className="flex w-full items-center justify-between">Razón social {d.rfc_constancia && <Detected />}</span>}
-            placeholder="Velpay Tecnologías S.A. de C.V."
-            value={data.razonSocial}
-            onChange={(e) => update({ razonSocial: e.target.value })}
-          />
-        )}
+        {/* --- Identity --- */}
+        <SectionTitle>{isPM ? "Datos del representante" : "Tus datos"}</SectionTitle>
         <TextField
           label={
             <span className="flex w-full items-center justify-between">
-              {isPM ? "Representante — Nombre(s)" : "Nombre(s)"} {d.ine && <Detected />}
+              {isPM ? "Nombre del representante" : "Nombre(s)"} {d.ine && <Detected />}
             </span>
           }
           placeholder="Ana María"
@@ -136,44 +105,56 @@ export function ConfirmData() {
           onChange={(e) => update({ apellidoMaterno: e.target.value })}
         />
         <TextField
-          label={
-            <span className="flex w-full items-center justify-between">
-              RFC {d.rfc_constancia ? <Detected /> : <span className="text-[12px] text-ink-3">Opcional</span>}
-            </span>
-          }
-          placeholder="Se completará con tu constancia"
-          value={data.rfc}
-          onChange={(e) => update({ rfc: e.target.value.toUpperCase() })}
-        />
-        <TextField
           label={<span className="flex w-full items-center justify-between">Domicilio {d.comprobante && <Detected />}</span>}
           placeholder="Calle Primavera 22, Col. Del Valle, CDMX"
           value={data.domicilioFiscal}
           onChange={(e) => update({ domicilioFiscal: e.target.value })}
         />
 
+        {/* --- Business --- */}
         <div className="border-t border-line pt-5">
-          <SectionTitle>Tu negocio</SectionTitle>
-          <CatalogSelect
-            label="Giro"
-            placeholder="Selecciona el giro de tu negocio"
-            value={data.giroId ?? ""}
-            options={GIROS.map((g) => ({ value: g.id, label: g.label }))}
-            onChange={selectGiro}
+          <SectionTitle>Datos del negocio</SectionTitle>
+          <TextField
+            label="Nombre del negocio"
+            placeholder="Ej. Boutique Aurora"
+            value={data.businessName}
+            onChange={(e) => update({ businessName: e.target.value })}
           />
+          {isPM && (
+            <div className="mt-5">
+              <TextField
+                label={<span className="flex w-full items-center justify-between">Razón social {d.rfc_constancia && <Detected />}</span>}
+                placeholder="Velpay Tecnologías S.A. de C.V."
+                value={data.razonSocial}
+                onChange={(e) => update({ razonSocial: e.target.value })}
+              />
+            </div>
+          )}
           <div className="mt-5">
-            <CatalogSelect
-              label="MCC"
-              placeholder="Se asigna según el giro"
-              value={data.mcc}
-              options={MCC_CATALOG.map((m) => ({ value: m, label: m }))}
-              onChange={(v) => update({ mcc: v })}
+            <TextField
+              label={
+                <span className="flex w-full items-center justify-between">
+                  RFC {d.rfc_constancia ? <Detected /> : <span className="text-[12px] text-ink-3">Opcional</span>}
+                </span>
+              }
+              placeholder="Se extrae de tu Constancia de Situación Fiscal"
+              value={data.rfc}
+              onChange={(e) => update({ rfc: e.target.value.toUpperCase() })}
             />
+          </div>
+          <div className="mt-5">
+            <GiroSelect value={data.giroId ?? ""} onChange={(id) => update({ giroId: id })} />
           </div>
         </div>
 
+        {/* --- Bank --- */}
         <div className="border-t border-line pt-5">
           <SectionTitle>Datos bancarios</SectionTitle>
+          <p className="mb-4 text-[13px] leading-relaxed text-ink-3">
+            {isPM
+              ? "La cuenta debe estar a nombre de la razón social del negocio. Aquí es donde Banorte abonará tus ventas."
+              : "La cuenta y su titular deben coincidir con los de tu estado de cuenta. Aquí es donde Banorte abonará tus ventas."}
+          </p>
           <TextField
             label={<span className="flex w-full items-center justify-between">CLABE {d.estado_cuenta && <Detected />}</span>}
             inputMode="numeric"
@@ -189,6 +170,17 @@ export function ConfirmData() {
               onChange={(e) => update({ bank: e.target.value })}
             />
           </div>
+          {!isPM && (
+            <div className="mt-5">
+              <TextField
+                label="Titular de la cuenta"
+                hint="Debe coincidir con el nombre que aparece en tu estado de cuenta."
+                placeholder="Ana María Rodríguez López"
+                value={data.accountHolder}
+                onChange={(e) => update({ accountHolder: e.target.value })}
+              />
+            </div>
+          )}
         </div>
       </div>
     </SplitLayout>
