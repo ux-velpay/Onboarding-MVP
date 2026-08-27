@@ -45,7 +45,7 @@ export const PRESETS: Preset[] = [
   },
   {
     id: "pm",
-    label: "Persona Moral (sin acta)",
+    label: "Persona Moral",
     data: {
       personType: "PM",
       razonSocial: "Velpay Tecnologías S.A. de C.V.",
@@ -61,7 +61,7 @@ export const PRESETS: Preset[] = [
       accountHolder: "Velpay Tecnologías S.A. de C.V.",
       giroId: "8999",
       volumeRangeId: "r2",
-      documentsDone: { ...SCANNED, rfc_constancia: true },
+      documentsDone: { ...SCANNED, rfc_constancia: true, acta: true },
     },
   },
   {

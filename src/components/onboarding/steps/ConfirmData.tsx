@@ -152,8 +152,8 @@ export function ConfirmData() {
           <SectionTitle>Datos bancarios</SectionTitle>
           <p className="mb-4 text-[13px] leading-relaxed text-ink-3">
             {isPM
-              ? "La cuenta debe estar a nombre de la razón social del negocio. Aquí es donde Banorte abonará tus ventas."
-              : "La cuenta y su titular deben coincidir con los de tu estado de cuenta. Aquí es donde Banorte abonará tus ventas."}
+              ? "La cuenta debe estar a nombre de la razón social del negocio."
+              : "La cuenta y su titular deben coincidir con los de tu estado de cuenta."}
           </p>
           <TextField
             label={<span className="flex w-full items-center justify-between">CLABE {d.estado_cuenta && <Detected />}</span>}

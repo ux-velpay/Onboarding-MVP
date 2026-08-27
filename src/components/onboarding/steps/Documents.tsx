@@ -237,12 +237,6 @@ export function Documents() {
         })}
       </div>
 
-      {data.personType === "PM" && (
-        <p className="mt-4 rounded-[12px] bg-surface p-4 text-[13px] leading-relaxed text-ink-2">
-          El acta constitutiva es opcional aquí. Si no la tienes a la mano, tu registro
-          continúa y podrás subirla más adelante desde el Assistant.
-        </p>
-      )}
     </SplitLayout>
   );
 }

@@ -52,8 +52,10 @@ export function documentsFor(data: OnboardingData): DocDef[] {
     {
       id: "rfc_constancia",
       title: "Constancia de Situación Fiscal (CSF)",
-      desc: "Opcional · de aquí extraemos y validamos tu RFC",
-      required: false,
+      desc: isPM
+        ? "Debe corresponder al negocio · de aquí extraemos y validamos tu RFC"
+        : "Opcional · debe corresponder al negocio; de aquí extraemos tu RFC",
+      required: isPM,
       icon: "file",
     },
   ];
@@ -62,8 +64,8 @@ export function documentsFor(data: OnboardingData): DocDef[] {
     docs.push({
       id: "acta",
       title: "Acta constitutiva",
-      desc: "Opcional · puedes subirla después en el Assistant",
-      required: false,
+      desc: "Documento de constitución de la empresa",
+      required: true,
       icon: "corporate",
       uploadOnly: true,
     });
