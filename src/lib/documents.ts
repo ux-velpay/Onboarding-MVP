@@ -43,7 +43,7 @@ export function documentsFor(data: OnboardingData): DocDef[] {
       id: "fotos_negocio",
       title: "Fotos del negocio",
       desc: "Interior y exterior · mínimo 2 fotos",
-      required: true,
+      required: false,
       icon: "photo",
       twoSided: true,
       sides: ["Interior", "Exterior"],
@@ -64,8 +64,8 @@ export function documentsFor(data: OnboardingData): DocDef[] {
     docs.push({
       id: "acta",
       title: "Acta constitutiva",
-      desc: "Documento de constitución de la empresa",
-      required: true,
+      desc: "Opcional · puedes subirla después en el Assistant",
+      required: false,
       icon: "corporate",
       uploadOnly: true,
     });

@@ -115,7 +115,7 @@ export function ConfirmData() {
         <div className="border-t border-line pt-5">
           <SectionTitle>Datos del negocio</SectionTitle>
           <TextField
-            label="Nombre del negocio"
+            label="Nombre comercial"
             placeholder="Ej. Boutique Aurora"
             value={data.businessName}
             onChange={(e) => update({ businessName: e.target.value })}
