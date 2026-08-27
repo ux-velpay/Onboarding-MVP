@@ -54,7 +54,7 @@ export const PRESETS: Preset[] = [
       clabe: "072180000087654321",
       giroId: "8999",
       mcc: "8999 - Servicios profesionales",
-      volumeRangeId: "r3",
+      volumeRangeId: "r2",
       documentsDone: { ...SCANNED, rfc_constancia: true },
     },
   },

@@ -6,10 +6,9 @@ import type { Activity, Giro, VolumeRange } from "./types";
 
 /** Volume ranges — PRD BR-001 / BR-002. The last one crosses the $8,000 ceiling. */
 export const VOLUME_RANGES: VolumeRange[] = [
-  { id: "r1", label: "Menos de $2,000", min: 1, max: 2000, exceedsNivel0: false },
-  { id: "r2", label: "$2,001 - $5,000", min: 2001, max: 5000, exceedsNivel0: false },
-  { id: "r3", label: "$5,001 - $8,000", min: 5001, max: 8000, exceedsNivel0: false },
-  { id: "r4", label: "Más de $8,000", min: 8001, max: null, exceedsNivel0: true },
+  { id: "r1", label: "Menos de $25,000", min: 1, max: 25000, exceedsNivel0: false },
+  { id: "r2", label: "$25,000 - $50,000", min: 25001, max: 50000, exceedsNivel0: false },
+  { id: "r3", label: "Más de $50,000", min: 50001, max: null, exceedsNivel0: true },
 ];
 
 /** MCC catalog (Merchant Category Codes) — BR-009. */
