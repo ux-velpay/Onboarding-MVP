@@ -74,6 +74,10 @@ export interface OnboardingData {
   // Account creation (pre-registration)
   accountContact: string; // email or phone used to create the account
 
+  /** Demo flag — when true the OCR "found" a discrepancy, so the
+   *  cross-validation step is inserted (out of the happy path). */
+  simulateDiscrepancy: boolean;
+
   // Step 1 — person type
   personType: PersonType | null;
   hasRfc: boolean | null;
@@ -132,6 +136,7 @@ export interface OnboardingData {
 export function emptyOnboardingData(): OnboardingData {
   return {
     accountContact: "",
+    simulateDiscrepancy: false,
     nombres: "",
     apellidoPaterno: "",
     apellidoMaterno: "",

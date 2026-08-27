@@ -59,6 +59,28 @@ export const PRESETS: Preset[] = [
     },
   },
   {
+    id: "discrepancia",
+    label: "Discrepancia entre documentos",
+    data: {
+      personType: "PF",
+      // OCR found conflicting data across documents -> cross-validation appears.
+      simulateDiscrepancy: true,
+      nombres: "Ana María",
+      apellidoPaterno: "Rodríguez",
+      apellidoMaterno: "López",
+      rfc: "ROMA850312HN4",
+      regimenFiscal:
+        "612 - Personas Físicas con Actividades Empresariales y Profesionales",
+      domicilioFiscal: "Calle Primavera 22, Col. Del Valle, CDMX",
+      bank: "Banorte",
+      clabe: "072180000012345678",
+      giroId: "5651",
+      mcc: "5651 - Tiendas de ropa",
+      volumeRangeId: "r2",
+      documentsDone: { ...SCANNED, rfc_constancia: true },
+    },
+  },
+  {
     id: "giroprohibido",
     label: "Giro en revisión (Mesa de Control)",
     data: {

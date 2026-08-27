@@ -1,18 +1,22 @@
+"use client";
+
 import type { ReactNode } from "react";
 import { StepBar } from "@/components/ui/StepBar";
 import { VelpayLogo } from "@/components/ui/VelpayLogo";
-import { TOTAL_STEPS } from "@/lib/flow";
+import { totalSteps } from "@/lib/flow";
 import { SplitLayout } from "../SplitLayout";
+import { useOnboarding } from "../provider";
 
 /** Shared layout for the account-creation screens: logo + progress bar + content,
  *  grouped and centered (matches the auth mockups). */
 export function AuthScreen({ step, children }: { step: number; children: ReactNode }) {
+  const { data } = useOnboarding();
   return (
     <SplitLayout align="center">
       <div className="w-full">
         <VelpayLogo />
         <div className="mt-6">
-          <StepBar current={step} total={TOTAL_STEPS} />
+          <StepBar current={step} total={totalSteps(data)} />
         </div>
         <div className="mt-8">{children}</div>
       </div>
