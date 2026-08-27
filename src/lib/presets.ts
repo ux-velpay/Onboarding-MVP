@@ -20,10 +20,9 @@ const SCANNED = {
 export const PRESETS: Preset[] = [
   {
     id: "pf",
-    label: "Persona Física con RFC",
+    label: "Persona Física (con CSF)",
     data: {
       personType: "PF",
-      hasRfc: true,
       nombres: "Ana María",
       apellidoPaterno: "Rodríguez",
       apellidoMaterno: "López",
@@ -44,7 +43,6 @@ export const PRESETS: Preset[] = [
     label: "Persona Moral (sin acta)",
     data: {
       personType: "PM",
-      hasRfc: true,
       razonSocial: "Velpay Tecnologías S.A. de C.V.",
       nombres: "David Alejandro",
       apellidoPaterno: "Gómez",
@@ -62,10 +60,9 @@ export const PRESETS: Preset[] = [
   },
   {
     id: "sinrfc",
-    label: "Persona Física sin RFC",
+    label: "Sin CSF (RFC no extraído)",
     data: {
       personType: "PF",
-      hasRfc: false,
       nombres: "Juan",
       apellidoPaterno: "Pérez",
       apellidoMaterno: "Hernández",

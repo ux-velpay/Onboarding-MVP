@@ -1,7 +1,7 @@
 // Document definitions for the scan-first onboarding flow.
-// Documents depend on the scenario (PF con RFC / PM con RFC / PF sin RFC).
-// Once scanned, each document "extracts" data (simulated OCR) that feeds the
-// cross-validation and confirm steps.
+// The system does NOT ask whether the merchant has an RFC — it extracts and
+// validates the RFC from the uploaded documents (mainly the CSF). The user
+// never types the RFC. The CSF is optional ("cuando aplique").
 
 import type { OnboardingData } from "./types";
 
@@ -9,52 +9,21 @@ export type DocId =
   | "ine"
   | "comprobante"
   | "estado_cuenta"
-  | "rfc_constancia" // CSF — Constancia de Situación Fiscal
+  | "rfc_constancia" // CSF — Constancia de Situación Fiscal (optional)
   | "acta";
 
-export type Scenario = "PF_RFC" | "PM_RFC" | "PF_SIN_RFC";
-
-export function scenarioOf(data: OnboardingData): Scenario {
-  if (data.personType === "PM") return "PM_RFC";
-  if (data.hasRfc === false) return "PF_SIN_RFC";
-  return "PF_RFC";
-}
-
-export interface DocDef {
-  id: DocId;
-  title: string;
-  desc: string;
-  required: boolean;
-  icon: "id" | "home" | "bank" | "file" | "corporate";
-  twoSided?: boolean;
-}
-
-/** Build the initial document list for the merchant's scenario (§5.1–5.3). */
+/** Documents requested at the start. Same base for everyone; PM adds the Acta. */
 export function documentsFor(data: OnboardingData): DocDef[] {
-  const sc = scenarioOf(data);
-  const docs: DocDef[] = [];
-
-  // Identity — INE, or representative's INE (PM), or passport (PF sin RFC).
-  if (sc === "PF_SIN_RFC") {
-    docs.push({
+  const isPM = data.personType === "PM";
+  const docs: DocDef[] = [
+    {
       id: "ine",
-      title: "Identificación tipo pasaporte",
-      desc: "Pasaporte vigente (reemplaza al RFC, BR-019)",
-      required: true,
-      icon: "id",
-    });
-  } else {
-    docs.push({
-      id: "ine",
-      title: sc === "PM_RFC" ? "INE del representante legal" : "Identificación oficial (INE)",
+      title: isPM ? "INE del representante legal" : "Identificación oficial (INE)",
       desc: "Frente y reverso de la credencial vigente",
       required: true,
       icon: "id",
       twoSided: true,
-    });
-  }
-
-  docs.push(
+    },
     {
       id: "comprobante",
       title: "Comprobante de domicilio",
@@ -68,22 +37,17 @@ export function documentsFor(data: OnboardingData): DocDef[] {
       desc: "Donde Banorte abonará tus ventas",
       required: true,
       icon: "bank",
-    }
-  );
-
-  // CSF — required for con-RFC scenarios; NOT requested for PF sin RFC.
-  if (sc !== "PF_SIN_RFC") {
-    docs.push({
+    },
+    {
       id: "rfc_constancia",
       title: "Constancia de Situación Fiscal (CSF)",
-      desc: "Valida RFC, régimen fiscal y nombre",
-      required: true,
+      desc: "Opcional · de aquí extraemos y validamos tu RFC",
+      required: false,
       icon: "file",
-    });
-  }
+    },
+  ];
 
-  // Persona Moral — Acta Constitutiva, optional (can be uploaded in the Assistant).
-  if (sc === "PM_RFC") {
+  if (isPM) {
     docs.push({
       id: "acta",
       title: "Acta constitutiva",
@@ -96,8 +60,18 @@ export function documentsFor(data: OnboardingData): DocDef[] {
   return docs;
 }
 
+export interface DocDef {
+  id: DocId;
+  title: string;
+  desc: string;
+  required: boolean;
+  icon: "id" | "home" | "bank" | "file" | "corporate";
+  twoSided?: boolean;
+}
+
 /**
- * Simulated OCR: what each document pre-fills when scanned.
+ * Simulated OCR: what each document extracts when scanned. The RFC and fiscal
+ * data come from the CSF (BR-006 — used as validation, not a capture field).
  */
 export function extractedData(
   docId: DocId,

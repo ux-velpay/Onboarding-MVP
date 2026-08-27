@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/cn";
-import { scenarioOf } from "@/lib/documents";
 import { Button } from "@/components/ui/Button";
 import { AlertTriangle, Check } from "@/components/ui/icons";
 import { SplitLayout } from "../SplitLayout";
@@ -20,9 +19,8 @@ interface Discrepancy {
 
 /** Build the (simulated) discrepancies the OCR found across documents. */
 function discrepanciesFor(data: OnboardingData): Discrepancy[] {
-  const sc = scenarioOf(data);
   const list: Discrepancy[] = [];
-  const isPM = sc === "PM_RFC";
+  const isPM = data.personType === "PM";
 
   // Name / Razón social — appears in INE, CSF, Estado de cuenta.
   if (data.documentsDone.ine && data.documentsDone.estado_cuenta) {
@@ -56,15 +54,14 @@ function discrepanciesFor(data: OnboardingData): Discrepancy[] {
     );
   }
 
-  // Domicilio — appears in Comprobante, CSF (or INE for PF sin RFC).
-  if (data.documentsDone.comprobante) {
-    const otherSource = sc === "PF_SIN_RFC" ? "INE" : "Constancia de Situación Fiscal";
+  // Domicilio — appears in Comprobante and CSF.
+  if (data.documentsDone.comprobante && data.documentsDone.rfc_constancia) {
     list.push({
       id: "domicilio",
       field: "Domicilio",
       options: [
         { source: "Comprobante de domicilio", value: "Calle Primavera 22, Col. Del Valle, CDMX" },
-        { source: otherSource, value: "Av. Reforma 405, Piso 12, CDMX" },
+        { source: "Constancia de Situación Fiscal", value: "Av. Reforma 405, Piso 12, CDMX" },
       ],
       apply: (v) => ({ domicilioFiscal: v }),
     });
