@@ -24,6 +24,7 @@ import { SplitLayout } from "../SplitLayout";
 import { WizardHeader } from "../WizardHeader";
 import { useOnboarding } from "../provider";
 import { StepTitle } from "./StepTitle";
+import { ScanModal } from "./ScanModal";
 
 const ICON = {
   id: IdCard,
@@ -47,6 +48,7 @@ export function Documents() {
   const [errored, setErrored] = useState<Record<string, boolean>>({});
   const [attempts, setAttempts] = useState<Record<string, number>>({});
   const timers = useRef<number[]>([]);
+  const [scanModal, setScanModal] = useState<{ doc: DocDef; slot?: number } | null>(null);
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
@@ -87,9 +89,26 @@ export function Documents() {
     timers.current.push(t);
   }
 
+  function handleScanSuccess(key: string) {
+    const doc = scanModal!.doc;
+    const docsDone = { ...data.documentsDone, [key]: true } as Record<string, boolean>;
+    let extractedFor: DocId | null = doc.id;
+    if (doc.twoSided) {
+      const both = docsDone[`${doc.id}_0`] && docsDone[`${doc.id}_1`];
+      docsDone[doc.id] = Boolean(both);
+      extractedFor = both ? doc.id : null;
+    }
+    update({
+      documentsDone: docsDone,
+      ...(extractedFor ? extractedData(extractedFor, data) : {}),
+    });
+    setScanModal(null);
+  }
+
   const canContinue = requiredDocsDone(data);
 
   return (
+    <>
     <SplitLayout
       align="start"
       header={<WizardHeader />}
@@ -173,7 +192,7 @@ export function Documents() {
                               <button
                                 key={label}
                                 type="button"
-                                onClick={() => scan(doc, i)}
+                                onClick={() => setScanModal({ doc, slot: i })}
                                 disabled={sideDone || sideScan}
                                 className={cn(
                                   "focus-ring inline-flex items-center gap-2 rounded-[9px] border px-3 py-2 text-[13px] font-medium transition-colors",
@@ -209,7 +228,7 @@ export function Documents() {
                           {!doc.uploadOnly && (
                             <button
                               type="button"
-                              onClick={() => scan(doc)}
+                              onClick={() => setScanModal({ doc })}
                               disabled={isScanning}
                               className="focus-ring inline-flex items-center gap-2 rounded-[9px] bg-primary-dark px-3.5 py-2 text-[13px] font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-70"
                             >
@@ -238,5 +257,20 @@ export function Documents() {
       </div>
 
     </SplitLayout>
+
+    {scanModal && (
+      <ScanModal
+        doc={scanModal.doc}
+        slot={scanModal.slot}
+        initialAttempt={attempts[
+          scanModal.slot !== undefined
+            ? `${scanModal.doc.id}_${scanModal.slot}`
+            : scanModal.doc.id
+        ] ?? 0}
+        onSuccess={handleScanSuccess}
+        onDismiss={() => setScanModal(null)}
+      />
+    )}
+    </>
   );
 }

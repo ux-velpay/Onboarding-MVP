@@ -110,7 +110,7 @@ export function StatusAprobado() {
 
 /* ---- Screen 7 · Rechazado ------------------------------------------------ */
 export function StatusRechazado() {
-  const { reset } = useOnboarding();
+  const { data, reset } = useOnboarding();
   return (
     <SplitLayout
       header={<WizardHeader step={7} />}
@@ -134,6 +134,24 @@ export function StatusRechazado() {
         La actividad comercial declarada no cumple con las políticas internas de riesgo
         del banco adquirente (Giro restringido).
       </InfoBox>
+      {(data.email || data.phone) && (
+        <InfoBox className="mt-4" title="Te notificamos a:">
+          <dl className="space-y-1">
+            {data.email && (
+              <div>
+                <span className="text-ink-3">Correo: </span>
+                <span className="font-medium text-ink">{data.email}</span>
+              </div>
+            )}
+            {data.phone && (
+              <div>
+                <span className="text-ink-3">Teléfono: </span>
+                <span className="font-medium text-ink">{data.phone}</span>
+              </div>
+            )}
+          </dl>
+        </InfoBox>
+      )}
     </SplitLayout>
   );
 }

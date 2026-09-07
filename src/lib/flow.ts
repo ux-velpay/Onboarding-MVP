@@ -14,6 +14,7 @@ export type Screen =
   | "cross-check"
   | "confirm"
   | "business"
+  | "contact"
   | "high-volume-redirect"
   | "activated"
   | "status-enviado"
@@ -31,7 +32,7 @@ export function captureSteps(data: OnboardingData): Screen[] {
     "documents",
   ];
   if (data.simulateDiscrepancy) steps.push("cross-check");
-  steps.push("confirm", "business");
+  steps.push("confirm", "business", "contact");
   return steps;
 }
 
@@ -64,7 +65,9 @@ export function nextScreen(screen: Screen, data: OnboardingData): Screen {
     case "business":
       return classifyLevel(data) === "FUERA_DE_RANGO"
         ? "high-volume-redirect"
-        : "activated";
+        : "contact";
+    case "contact":
+      return "activated";
     case "activated":
       return "status-enviado";
     default:
