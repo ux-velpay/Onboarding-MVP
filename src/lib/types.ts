@@ -74,6 +74,10 @@ export interface OnboardingData {
   // Account creation (pre-registration)
   accountContact: string; // email or phone used to create the account
 
+  // Alta exprés — datos mínimos del negocio (BR-033)
+  businessEmail: string; // correo del negocio
+  businessPhone: string; // teléfono del negocio
+
   /** Demo flag — when true the OCR "found" a discrepancy, so the
    *  cross-validation step is inserted (out of the happy path). */
   simulateDiscrepancy: boolean;
@@ -136,6 +140,8 @@ export interface OnboardingData {
 export function emptyOnboardingData(): OnboardingData {
   return {
     accountContact: "",
+    businessEmail: "",
+    businessPhone: "",
     simulateDiscrepancy: false,
     nombres: "",
     apellidoPaterno: "",

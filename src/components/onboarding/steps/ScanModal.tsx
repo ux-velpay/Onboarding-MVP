@@ -82,7 +82,9 @@ export function ScanModal({
   }, [phase, doc.id]);
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-white">
+    <div className="fixed inset-0 z-50 flex sm:items-center sm:justify-center sm:bg-primary-dark/30 sm:p-4 sm:backdrop-blur-sm">
+      {/* Full-screen on phones; centered phone-sized panel on larger screens. */}
+      <div className="relative flex h-full w-full flex-col overflow-hidden bg-white sm:h-[760px] sm:max-h-[calc(100dvh-2rem)] sm:w-[420px] sm:rounded-[28px] sm:shadow-[var(--shadow-lg)]">
       {/* Scan-line animation — scoped to modal */}
       <style>{`
         @keyframes scan-sweep{0%{top:4px}100%{top:calc(100% - 4px)}}
@@ -119,6 +121,7 @@ export function ScanModal({
           onDismiss={onDismiss}
         />
       )}
+      </div>
     </div>
   );
 }

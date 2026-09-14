@@ -13,6 +13,8 @@ const GROUPS: { title: string; items: { id: Screen; label: string }[] }[] = [
       { id: "auth-email", label: "Correo / teléfono" },
       { id: "auth-otp", label: "Código (OTP)" },
       { id: "auth-password", label: "Contraseña" },
+      { id: "business-data", label: "Datos del negocio" },
+      { id: "sync-terminal", label: "Sincronizar terminal" },
     ],
   },
   {

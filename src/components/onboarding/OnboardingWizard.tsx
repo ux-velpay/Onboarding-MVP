@@ -6,6 +6,8 @@ import { DemoNav } from "./DemoNav";
 import { AuthEmail } from "./steps/AuthEmail";
 import { AuthOtp } from "./steps/AuthOtp";
 import { AuthPassword } from "./steps/AuthPassword";
+import { BusinessData } from "./steps/BusinessData";
+import { SyncTerminal } from "./steps/SyncTerminal";
 import { Activated } from "./steps/Activated";
 import { PersonType } from "./steps/PersonType";
 import { Documents } from "./steps/Documents";
@@ -25,6 +27,8 @@ const SCREENS: Record<Screen, () => React.JSX.Element> = {
   "auth-email": AuthEmail,
   "auth-otp": AuthOtp,
   "auth-password": AuthPassword,
+  "business-data": BusinessData,
+  "sync-terminal": SyncTerminal,
   "person-type": PersonType,
   documents: Documents,
   "cross-check": CrossCheck,

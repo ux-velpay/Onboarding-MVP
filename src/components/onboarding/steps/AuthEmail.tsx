@@ -12,13 +12,13 @@ export function AuthEmail() {
   return (
     <AuthScreen step={1}>
       <AuthTitle>
-        Ingresa tu dirección de correo o teléfono para crear una cuenta Velpay
+        Ingresa tu dirección de correo para crear una cuenta Velpay
       </AuthTitle>
 
       <div className="mt-8">
         <TextField
-          label="Correo electrónico o número de teléfono"
-          placeholder="E-mail / número de teléfono"
+          label="Correo electrónico"
+          placeholder="E-mail"
           value={data.accountContact}
           onChange={(e) => update({ accountContact: e.target.value })}
         />

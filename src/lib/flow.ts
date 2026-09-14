@@ -9,6 +9,8 @@ export type Screen =
   | "auth-email"
   | "auth-otp"
   | "auth-password"
+  | "business-data"
+  | "sync-terminal"
   | "person-type"
   | "documents"
   | "cross-check"
@@ -28,6 +30,7 @@ export function captureSteps(data: OnboardingData): Screen[] {
     "auth-email",
     "auth-otp",
     "auth-password",
+    "business-data",
     "person-type",
     "documents",
   ];
@@ -52,6 +55,10 @@ export function nextScreen(screen: Screen, data: OnboardingData): Screen {
     case "auth-otp":
       return "auth-password";
     case "auth-password":
+      return "business-data";
+    case "business-data":
+      return "sync-terminal";
+    case "sync-terminal":
       return "person-type";
     case "person-type":
       return "documents";
