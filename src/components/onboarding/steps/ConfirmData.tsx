@@ -32,7 +32,7 @@ function GiroSelect({ value, onChange }: { value: string; onChange: (v: string) 
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`focus-ring h-[52px] w-full appearance-none rounded-[10px] border border-line bg-white px-4 pr-11 text-[15px] transition-colors ${
+          className={`focus-ring h-[48px] w-full appearance-none rounded-[10px] border border-line bg-white px-4 pr-11 text-[15px] transition-colors ${
             value ? "text-ink" : "text-placeholder"
           }`}
         >

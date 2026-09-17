@@ -39,7 +39,7 @@ export function TextField({ label, hint, error, className, ...props }: TextField
       <input
         className={cn(
           inputBase,
-          "h-[52px]",
+          "h-[48px]",
           error ? "border-danger" : undefined,
           className
         )}
@@ -59,7 +59,7 @@ export function TextArea({ label, hint, error, className, ...props }: TextAreaPr
   return (
     <FieldShell label={label} hint={hint} error={error}>
       <textarea
-        className={cn(inputBase, "min-h-[52px] resize-none py-3.5 leading-normal", className)}
+        className={cn(inputBase, "min-h-[48px] resize-none py-3.5 leading-normal", className)}
         rows={2}
         {...props}
       />

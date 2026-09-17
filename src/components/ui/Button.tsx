@@ -32,7 +32,7 @@ export function Button({
       type={type}
       className={cn(
         "focus-ring inline-flex items-center justify-center gap-2 rounded-[12px] px-6 text-[15px] font-medium leading-none transition-colors duration-200 disabled:cursor-not-allowed disabled:bg-line disabled:text-ink-3 disabled:shadow-none",
-        variant !== "link" && "h-[52px]",
+        variant !== "link" && "h-[48px]",
         fullWidth && "w-full",
         variants[variant],
         className
