@@ -11,7 +11,7 @@ interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
 const variants: Record<Variant, string> = {
   // action.primary → purple 500
   primary:
-    "bg-primary text-white hover:bg-primary-hover shadow-[0_1px_2px_rgba(45,0,109,0.25)]",
+    "bg-primary-dark text-white hover:bg-primary-hover shadow-[0_1px_2px_rgba(45,0,109,0.25)]",
   // action.secondary → dark purple 700
   secondary: "bg-primary-dark text-white hover:bg-primary-hover",
   // tertiary → white w/ border

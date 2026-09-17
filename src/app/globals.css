@@ -110,3 +110,19 @@ body {
     animation: none;
   }
 }
+
+/* ── Responsive layout helpers (raw @media — 100% reliable) ────── */
+/* mob-show : visible on mobile, gone on desktop */
+.mob-show      { display: block;  }
+.mob-show-flex { display: flex;   }
+/* desk-show : hidden on mobile, shown as block on desktop */
+.desk-show     { display: none;   }
+/* desk-show-flex : hidden on mobile, shown as flex on desktop */
+.desk-show-flex { display: none; }
+
+@media (min-width: 768px) {
+  .mob-show       { display: none  !important; }
+  .mob-show-flex  { display: none  !important; }
+  .desk-show      { display: block !important; }
+  .desk-show-flex { display: flex  !important; }
+}

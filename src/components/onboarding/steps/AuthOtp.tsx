@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { ArrowLeft } from "@/components/ui/icons";
 import { useOnboarding } from "../provider";
 import { AuthScreen, AuthTitle } from "./AuthScreen";
 
@@ -28,16 +27,15 @@ export function AuthOtp() {
   const complete = code.every((d) => d !== "");
 
   return (
-    <AuthScreen step={2}>
-      <button
-        type="button"
-        onClick={back}
-        aria-label="Atrás"
-        className="focus-ring mb-4 inline-flex text-primary-dark"
-      >
-        <ArrowLeft width={22} height={22} />
-      </button>
-
+    <AuthScreen
+      stage={0}
+      onBack={back}
+      footer={
+        <Button fullWidth disabled={!complete} onClick={next}>
+          Continuar
+        </Button>
+      }
+    >
       <AuthTitle>Enviamos un código</AuthTitle>
       <p className="mt-3 text-[15px] text-ink-2">
         Escribe el código que enviamos a{" "}
@@ -50,15 +48,13 @@ export function AuthOtp() {
         {code.map((d, i) => (
           <input
             key={i}
-            ref={(el) => {
-              inputs.current[i] = el;
-            }}
+            ref={(el) => { inputs.current[i] = el; }}
             value={d}
             inputMode="numeric"
             maxLength={1}
             onChange={(e) => setDigit(i, e.target.value)}
             onKeyDown={(e) => onKeyDown(i, e)}
-            className="focus-ring h-16 w-16 rounded-[12px] border border-line bg-white text-center text-[24px] font-medium text-ink"
+            className="focus-ring h-16 w-16 rounded-[12px] border border-line bg-[#fafafb] text-center text-[24px] font-medium text-ink"
           />
         ))}
       </div>
@@ -68,12 +64,6 @@ export function AuthOtp() {
       >
         Enviar de nuevo
       </button>
-
-      <div className="mt-8">
-        <Button fullWidth disabled={!complete} onClick={next}>
-          Continuar
-        </Button>
-      </div>
     </AuthScreen>
   );
 }

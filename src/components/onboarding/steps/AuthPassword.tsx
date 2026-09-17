@@ -19,7 +19,7 @@ function PasswordField({ label }: { label: string }) {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="••••••••"
-          className="focus-ring h-[52px] w-full rounded-[10px] border border-line bg-white px-4 pr-12 text-[15px] text-ink placeholder:text-placeholder"
+          className="focus-ring h-[52px] w-full rounded-[10px] border border-line bg-[#fafafb] px-4 pr-12 text-[15px] text-ink placeholder:text-placeholder"
         />
         <button
           type="button"
@@ -38,7 +38,14 @@ export function AuthPassword() {
   const { next } = useOnboarding();
 
   return (
-    <AuthScreen step={3}>
+    <AuthScreen
+      stage={0}
+      footer={
+        <Button fullWidth onClick={next}>
+          Continuar
+        </Button>
+      }
+    >
       <AuthTitle>
         ¡Muy bien!
         <br />
@@ -48,12 +55,6 @@ export function AuthPassword() {
       <div className="mt-8 space-y-5">
         <PasswordField label="Nueva contraseña" />
         <PasswordField label="Confirmación de nueva contraseña" />
-      </div>
-
-      <div className="mt-8">
-        <Button fullWidth onClick={next}>
-          Continuar
-        </Button>
       </div>
     </AuthScreen>
   );

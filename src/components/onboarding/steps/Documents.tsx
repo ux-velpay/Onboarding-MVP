@@ -20,10 +20,8 @@ import {
   Landmark,
   Upload,
 } from "@/components/ui/icons";
-import { SplitLayout } from "../SplitLayout";
-import { WizardHeader } from "../WizardHeader";
 import { useOnboarding } from "../provider";
-import { StepTitle } from "./StepTitle";
+import { AuthScreen, AuthTitle } from "./AuthScreen";
 import { ScanModal } from "./ScanModal";
 
 const ICON = {
@@ -109,26 +107,18 @@ export function Documents() {
 
   return (
     <>
-    <SplitLayout
-      align="start"
-      header={<WizardHeader />}
+    <AuthScreen
+      stage={2}
       footer={
-        <div className="space-y-3">
-          <Button fullWidth disabled={!canContinue} onClick={next}>
-            Continuar
-          </Button>
-          {!canContinue && (
-            <p className="text-center text-[13px] text-ink-3">
-              Sube o escanea los documentos obligatorios para continuar.
-            </p>
-          )}
-        </div>
+        <Button variant="secondary" fullWidth disabled={!canContinue} onClick={next}>
+          Continuar
+        </Button>
       }
     >
-      <StepTitle
-        title="Sube o escanea tus documentos"
-        subtitle="Toma una foto con tu cámara y extraemos los datos por ti. Podrás confirmarlos en el siguiente paso."
-      />
+      <AuthTitle>Sube o escanea tus documentos</AuthTitle>
+      <p className="mt-2 mb-6 text-[15px] leading-relaxed text-ink-3">
+        Toma una foto con tu cámara y extraemos los datos por ti. Podrás confirmarlos en el siguiente paso.
+      </p>
       <div className="space-y-3">
         {docs.map((doc) => {
           const Icon = ICON[doc.icon];
@@ -149,8 +139,8 @@ export function Documents() {
               <div className="flex items-start gap-3.5">
                 <span
                   className={cn(
-                    "flex h-11 w-11 shrink-0 items-center justify-center rounded-full",
-                    isDone ? "bg-success-bg text-success" : "bg-page text-ink-2"
+                    "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
+                    isDone ? "bg-success-bg text-success" : "bg-surface text-ink-3"
                   )}
                 >
                   {isDone ? <Check width={20} height={20} /> : <Icon width={20} height={20} />}
@@ -256,7 +246,7 @@ export function Documents() {
         })}
       </div>
 
-    </SplitLayout>
+    </AuthScreen>
 
     {scanModal && (
       <ScanModal

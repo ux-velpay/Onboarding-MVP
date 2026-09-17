@@ -3,27 +3,26 @@
 import { Button } from "@/components/ui/Button";
 import { RadioCard } from "@/components/ui/RadioCard";
 import { Building, UserIcon } from "@/components/ui/icons";
-import { SplitLayout } from "../SplitLayout";
-import { WizardHeader } from "../WizardHeader";
 import { useOnboarding } from "../provider";
-import { StepTitle } from "./StepTitle";
+import { AuthScreen, AuthTitle } from "./AuthScreen";
 
 export function PersonType() {
   const { data, update, next } = useOnboarding();
 
   return (
-    <SplitLayout
-      header={<WizardHeader />}
+    <AuthScreen
+      stage={1}
       footer={
-        <Button fullWidth disabled={!data.personType} onClick={next}>
+        <Button variant="secondary" fullWidth disabled={!data.personType} onClick={next}>
           Continuar
         </Button>
       }
     >
-      <StepTitle
-        title="¿Cómo está registrado tu negocio?"
-        subtitle="Con tus documentos extraemos y validamos el resto de tus datos."
-      />
+      <AuthTitle>¿Cómo está registrado tu negocio?</AuthTitle>
+      <p className="mt-2 mb-6 text-[15px] leading-relaxed text-ink-3">
+        Con tus documentos extraemos y validamos el resto de tus datos.
+      </p>
+
       <div className="space-y-3">
         <RadioCard
           selected={data.personType === "PF"}
@@ -40,6 +39,6 @@ export function PersonType() {
           description="Empresa constituida como sociedad mercantil o asociación civil"
         />
       </div>
-    </SplitLayout>
+    </AuthScreen>
   );
 }

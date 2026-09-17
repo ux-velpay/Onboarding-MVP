@@ -10,7 +10,7 @@ interface StepTitleProps {
 export function StepTitle({ title, subtitle, className }: StepTitleProps) {
   return (
     <div className={cn("mb-6", className)}>
-      <h2 className="text-[24px] font-medium leading-tight tracking-tight text-primary-dark">
+      <h2 className="text-[18px] font-medium text-[#292828]" style={{ lineHeight: "116%" }}>
         {title}
       </h2>
       {subtitle && (

@@ -10,7 +10,20 @@ export function AuthEmail() {
   const complete = data.accountContact.trim() !== "";
 
   return (
-    <AuthScreen step={1}>
+    <AuthScreen
+      stage={0}
+      footer={
+        <div className="space-y-4 text-center">
+          <Button variant="secondary" fullWidth disabled={!complete} onClick={next}>
+            Continuar
+          </Button>
+          <p className="text-[14px] text-ink-2">
+            ¿Ya estás registrado?{" "}
+            <span className="font-medium text-primary underline">Inicia sesión aquí</span>
+          </p>
+        </div>
+      }
+    >
       <AuthTitle>
         Ingresa tu dirección de correo para crear una cuenta Velpay
       </AuthTitle>
@@ -18,7 +31,7 @@ export function AuthEmail() {
       <div className="mt-8">
         <TextField
           label="Correo electrónico"
-          placeholder="E-mail"
+          placeholder="Correo electrónico"
           value={data.accountContact}
           onChange={(e) => update({ accountContact: e.target.value })}
         />
@@ -26,16 +39,6 @@ export function AuthEmail() {
           Al ingresar tu correo, aceptas el{" "}
           <span className="font-medium text-primary underline">aviso de privacidad</span> y{" "}
           <span className="font-medium text-primary underline">términos y condiciones.</span>
-        </p>
-      </div>
-
-      <div className="mt-8 space-y-4 text-center">
-        <Button variant="secondary" fullWidth disabled={!complete} onClick={next}>
-          Continuar
-        </Button>
-        <p className="text-[14px] text-ink-2">
-          ¿Ya estás registrado?{" "}
-          <span className="font-medium text-primary underline">Inicia sesión aquí</span>
         </p>
       </div>
     </AuthScreen>

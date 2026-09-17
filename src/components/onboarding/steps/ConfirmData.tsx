@@ -5,10 +5,8 @@ import { Button } from "@/components/ui/Button";
 import { TextField } from "@/components/ui/TextField";
 import { Check, ChevronDown } from "@/components/ui/icons";
 import { GIROS } from "@/lib/catalogs";
-import { SplitLayout } from "../SplitLayout";
-import { WizardHeader } from "../WizardHeader";
 import { useOnboarding } from "../provider";
-import { StepTitle } from "./StepTitle";
+import { AuthScreen, AuthTitle } from "./AuthScreen";
 
 function Detected() {
   return (
@@ -65,19 +63,18 @@ export function ConfirmData() {
   );
 
   return (
-    <SplitLayout
-      align="start"
-      header={<WizardHeader />}
+    <AuthScreen
+      stage={2}
       footer={
-        <Button fullWidth disabled={!complete} onClick={next}>
+        <Button variant="secondary" fullWidth disabled={!complete} onClick={next}>
           Confirmar y continuar
         </Button>
       }
     >
-      <StepTitle
-        title="Confirma tus datos"
-        subtitle="Revisa que todo esté correcto y edítalo si hace falta."
-      />
+      <AuthTitle>Confirma tus datos</AuthTitle>
+      <p className="mt-2 mb-6 text-[15px] leading-relaxed text-ink-3">
+        Revisa que todo esté correcto y edítalo si hace falta.
+      </p>
 
       <div className="space-y-5">
         {/* --- Identity --- */}
@@ -183,6 +180,6 @@ export function ConfirmData() {
           )}
         </div>
       </div>
-    </SplitLayout>
+    </AuthScreen>
   );
 }

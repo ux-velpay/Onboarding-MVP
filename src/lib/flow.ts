@@ -24,19 +24,20 @@ export type Screen =
   | "status-aprobado"
   | "status-rechazado";
 
-/** Numbered steps for the progress bar — cross-check only counts when present. */
-export function captureSteps(data: OnboardingData): Screen[] {
-  const steps: Screen[] = [
-    "auth-email",
-    "auth-otp",
-    "auth-password",
-    "business-data",
-    "person-type",
-    "documents",
+/**
+ * Six phase-level markers for the progress bar.
+ * auth-otp and auth-password are part of phase 1 (Crear cuenta).
+ * person-type is part of phase 3 (Documentos).
+ */
+export function captureSteps(_data: OnboardingData): Screen[] {
+  return [
+    "auth-email",    // Paso 1 — Crear cuenta
+    "business-data", // Paso 2 — Datos del negocio
+    "documents",     // Paso 3 — Documentos
+    "confirm",       // Paso 4 — Confirmar datos
+    "business",      // Paso 5 — Volumen de transacciones
+    "contact",       // Paso 6 — Datos de contacto
   ];
-  if (data.simulateDiscrepancy) steps.push("cross-check");
-  steps.push("confirm", "business", "contact");
-  return steps;
 }
 
 export function totalSteps(data: OnboardingData): number {
@@ -44,8 +45,13 @@ export function totalSteps(data: OnboardingData): number {
 }
 
 export function stepNumber(screen: Screen, data: OnboardingData): number | null {
-  const idx = captureSteps(data).indexOf(screen);
-  return idx === -1 ? null : idx + 1;
+  const steps = captureSteps(data);
+  const idx = steps.indexOf(screen);
+  if (idx !== -1) return idx + 1;
+  // Screens that belong to a phase but aren't the phase marker
+  if (screen === "auth-otp" || screen === "auth-password") return 1;
+  if (screen === "person-type" || screen === "cross-check") return 3;
+  return null;
 }
 
 export function nextScreen(screen: Screen, data: OnboardingData): Screen {

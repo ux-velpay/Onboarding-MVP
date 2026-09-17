@@ -25,7 +25,7 @@ export function FieldShell({ label, hint, error, children }: FieldShellProps) {
 }
 
 const inputBase =
-  "focus-ring w-full rounded-[10px] border border-line bg-white px-4 text-[15px] text-ink placeholder:text-placeholder transition-colors";
+  "focus-ring w-full rounded-[10px] border border-line bg-[#fafafb] px-4 text-[15px] text-ink placeholder:text-placeholder transition-colors";
 
 interface TextFieldProps extends ComponentPropsWithoutRef<"input"> {
   label?: ReactNode;

@@ -3,27 +3,25 @@
 import { Button } from "@/components/ui/Button";
 import { RadioCard } from "@/components/ui/RadioCard";
 import { VOLUME_RANGES } from "@/lib/catalogs";
-import { SplitLayout } from "../SplitLayout";
-import { WizardHeader } from "../WizardHeader";
 import { useOnboarding } from "../provider";
-import { StepTitle } from "./StepTitle";
+import { AuthScreen, AuthTitle } from "./AuthScreen";
 
 export function Business() {
   const { data, update, next } = useOnboarding();
 
   return (
-    <SplitLayout
-      header={<WizardHeader />}
+    <AuthScreen
+      stage={3}
       footer={
-        <Button fullWidth disabled={!data.volumeRangeId} onClick={next}>
+        <Button variant="secondary" fullWidth disabled={!data.volumeRangeId} onClick={next}>
           Continuar
         </Button>
       }
     >
-      <StepTitle
-        title="Sobre tu negocio"
-        subtitle="¿Cuánto esperas vender al mes? Selecciona el volumen aproximado de ventas."
-      />
+      <AuthTitle>Volumen mensual de ventas</AuthTitle>
+      <p className="mt-2 mb-6 text-[15px] leading-relaxed text-ink-3">
+        ¿Cuánto esperas vender al mes? Selecciona el volumen aproximado de ventas.
+      </p>
       <div className="space-y-3">
         {VOLUME_RANGES.map((r) => (
           <RadioCard
@@ -34,6 +32,6 @@ export function Business() {
           />
         ))}
       </div>
-    </SplitLayout>
+    </AuthScreen>
   );
 }

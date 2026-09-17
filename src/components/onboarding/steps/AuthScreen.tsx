@@ -1,23 +1,48 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { StepBar } from "@/components/ui/StepBar";
+import { StageBar } from "@/components/ui/StageBar";
 import { VelpayLogo } from "@/components/ui/VelpayLogo";
-import { totalSteps } from "@/lib/flow";
+import { ArrowLeft } from "@/components/ui/icons";
 import { SplitLayout } from "../SplitLayout";
-import { useOnboarding } from "../provider";
 
-/** Shared layout for the account-creation screens: logo + progress bar + content,
- *  grouped and centered (matches the auth mockups). */
-export function AuthScreen({ step, children }: { step: number; children: ReactNode }) {
-  const { data } = useOnboarding();
+/**
+ * Shared layout for all onboarding steps.
+ * `stage` is 0-indexed: 0=Cuenta, 1=Negocio, 2=Documentación, 3=Activación.
+ */
+export function AuthScreen({
+  stage,
+  footer,
+  onBack,
+  children,
+}: {
+  stage: number;
+  footer?: ReactNode;
+  onBack?: () => void;
+  children: ReactNode;
+}) {
   return (
-    <SplitLayout align="center">
+    <SplitLayout align="start" footer={footer}>
       <div className="w-full">
-        <VelpayLogo />
-        <div className="mt-6">
-          <StepBar current={step} total={totalSteps(data)} />
+        <div><VelpayLogo /></div>
+
+        {onBack && (
+          <div className="mt-5">
+            <button
+              type="button"
+              onClick={onBack}
+              aria-label="Atrás"
+              className="focus-ring inline-flex text-primary-dark"
+            >
+              <ArrowLeft width={22} height={22} />
+            </button>
+          </div>
+        )}
+
+        <div className={onBack ? "mt-5" : "mt-6"}>
+          <StageBar active={stage} />
         </div>
+
         <div className="mt-8">{children}</div>
       </div>
     </SplitLayout>
@@ -26,7 +51,7 @@ export function AuthScreen({ step, children }: { step: number; children: ReactNo
 
 export function AuthTitle({ children }: { children: ReactNode }) {
   return (
-    <h2 className="text-[24px] font-medium leading-tight tracking-tight text-primary-dark">
+    <h2 className="text-[18px] font-medium text-[#292828]" style={{ lineHeight: "116%" }}>
       {children}
     </h2>
   );
