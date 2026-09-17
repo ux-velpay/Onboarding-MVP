@@ -63,12 +63,12 @@ export function Activated() {
       >
         {/* Success icon */}
         <div
-          className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-success-bg"
+          className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-full bg-success-bg"
           style={{ animation: "vp-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both" }}
         >
           <Check
-            width={32}
-            height={32}
+            width={24}
+            height={24}
             className="text-success"
             style={{ animation: "vp-check 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both" }}
           />
@@ -85,7 +85,7 @@ export function Activated() {
         `}</style>
 
         {/* Heading */}
-        <h1 style={{ lineHeight: "116%" }} className="text-[22px] font-semibold text-[#292828]">
+        <h1 style={{ lineHeight: "120%" }} className="text-[26px] font-bold text-[#292828]">
           {held
             ? "Estamos revisando la información de tu negocio"
             : "¡Felicidades! Completaste tu registro"}
