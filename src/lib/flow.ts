@@ -63,8 +63,6 @@ export function nextScreen(screen: Screen, data: OnboardingData): Screen {
     case "auth-password":
       return "business-data";
     case "business-data":
-      return "sync-terminal";
-    case "sync-terminal":
       return "person-type";
     case "person-type":
       return "documents";

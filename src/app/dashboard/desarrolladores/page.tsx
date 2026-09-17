@@ -67,8 +67,8 @@ function goToOnboarding(router: ReturnType<typeof useRouter>) {
     const raw = localStorage.getItem("velpay-onboarding-v12");
     if (raw) {
       const state = JSON.parse(raw);
-      if (state.screen === "sync-terminal") {
-        state.history = [...(state.history ?? []), "sync-terminal"];
+      if (state.screen === "sync-terminal" || state.screen === "business-data") {
+        state.history = [...(state.history ?? []), state.screen];
         state.screen = "person-type";
         localStorage.setItem("velpay-onboarding-v12", JSON.stringify(state));
       }
