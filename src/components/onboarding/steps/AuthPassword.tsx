@@ -35,11 +35,12 @@ function PasswordField({ label }: { label: string }) {
 }
 
 export function AuthPassword() {
-  const { next } = useOnboarding();
+  const { next, back } = useOnboarding();
 
   return (
     <AuthScreen
       stage={0}
+      onBack={back}
       footer={
         <Button fullWidth onClick={next}>
           Continuar

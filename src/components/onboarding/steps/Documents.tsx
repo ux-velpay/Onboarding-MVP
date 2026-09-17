@@ -40,7 +40,7 @@ function Spinner() {
 }
 
 export function Documents() {
-  const { data, update, next } = useOnboarding();
+  const { data, update, next, back } = useOnboarding();
   const docs = documentsFor(data);
   const [scanning, setScanning] = useState<Record<string, boolean>>({});
   const [errored, setErrored] = useState<Record<string, boolean>>({});
@@ -109,6 +109,7 @@ export function Documents() {
     <>
     <AuthScreen
       stage={2}
+      onBack={back}
       footer={
         <Button variant="secondary" fullWidth disabled={!canContinue} onClick={next}>
           Continuar
@@ -172,7 +173,17 @@ export function Documents() {
                   {/* Actions */}
                   {!isDone && (
                     <div className="mt-3">
-                      {doc.twoSided ? (
+                      {doc.photos ? (
+                        <button
+                          type="button"
+                          onClick={() => setScanModal({ doc })}
+                          disabled={isScanning}
+                          className="focus-ring inline-flex items-center gap-2 rounded-[9px] bg-primary-dark px-3.5 py-2 text-[13px] font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-70"
+                        >
+                          {isScanning ? <Spinner /> : <Camera width={15} height={15} />}
+                          {isScanning ? "Capturando…" : "Tomar fotos"}
+                        </button>
+                      ) : doc.twoSided ? (
                         <div className="flex flex-wrap gap-2">
                           {(doc.sides ?? ["Frente", "Reverso"]).map((label, i) => {
                             const k = `${doc.id}_${i}`;

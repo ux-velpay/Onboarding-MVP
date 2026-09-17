@@ -74,6 +74,7 @@ function goToOnboarding(router: ReturnType<typeof useRouter>) {
       }
     }
   } catch { /* noop */ }
+  sessionStorage.setItem("vp-onboarding-origin", "dashboard");
   router.push("/");
 }
 
@@ -96,7 +97,7 @@ function RegistroBanner() {
   return (
     <>
       {loading && <LoadingOverlay />}
-      <div className="sticky top-3 z-10 mx-4 flex items-center gap-3 px-4 py-3 bg-purple-50 rounded-2xl">
+      <div className="sticky top-0 z-10 flex items-center gap-3 px-4 py-3 bg-purple-100">
         {/* Clock icon */}
         <span className="shrink-0 w-9 h-9 rounded-full bg-primary flex items-center justify-center">
           <IcoClock className="text-white" />

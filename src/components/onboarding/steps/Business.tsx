@@ -7,11 +7,12 @@ import { useOnboarding } from "../provider";
 import { AuthScreen, AuthTitle } from "./AuthScreen";
 
 export function Business() {
-  const { data, update, next } = useOnboarding();
+  const { data, update, next, back } = useOnboarding();
 
   return (
     <AuthScreen
       stage={3}
+      onBack={back}
       footer={
         <Button variant="secondary" fullWidth disabled={!data.volumeRangeId} onClick={next}>
           Continuar

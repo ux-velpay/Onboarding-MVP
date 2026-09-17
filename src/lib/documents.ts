@@ -45,8 +45,6 @@ export function documentsFor(data: OnboardingData): DocDef[] {
       desc: "Interior y exterior · mínimo 2 fotos",
       required: false,
       icon: "photo",
-      twoSided: true,
-      sides: ["Interior", "Exterior"],
       photos: true,
     },
     {

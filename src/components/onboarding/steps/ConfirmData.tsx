@@ -52,7 +52,7 @@ function GiroSelect({ value, onChange }: { value: string; onChange: (v: string) 
 }
 
 export function ConfirmData() {
-  const { data, update, next } = useOnboarding();
+  const { data, update, next, back } = useOnboarding();
   const isPM = data.personType === "PM";
   const d = data.documentsDone;
 
@@ -65,6 +65,7 @@ export function ConfirmData() {
   return (
     <AuthScreen
       stage={2}
+      onBack={back}
       footer={
         <Button variant="secondary" fullWidth disabled={!complete} onClick={next}>
           Confirmar y continuar

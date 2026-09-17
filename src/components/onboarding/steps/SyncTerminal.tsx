@@ -65,7 +65,7 @@ export function SyncTerminal() {
               ¿Prefieres terminar tu registro primero? Sube tus documentos para completar
               tu expediente y asegurar tu cuenta.
             </p>
-            <Button fullWidth className="rounded-full" onClick={next}>
+            <Button variant="secondary" fullWidth onClick={next}>
               Continuar con el registro
             </Button>
           </div>
@@ -73,7 +73,7 @@ export function SyncTerminal() {
       >
         {/* Title */}
         <div className="mb-6">
-          <h1 className="text-[26px] font-semibold text-[#292828] leading-[116%] mb-3">
+          <h1 className="text-[22px] font-medium text-[#292828] leading-[116%] mb-3">
             ¡Felicidades! Tu cuenta del comercio ya está creado.
           </h1>
           <p className="text-[15px] leading-relaxed text-ink-3">
