@@ -50,10 +50,8 @@ export function documentsFor(data: OnboardingData): DocDef[] {
     {
       id: "rfc_constancia",
       title: "Constancia de Situación Fiscal (CSF)",
-      desc: isPM
-        ? "Debe corresponder al negocio · de aquí extraemos y validamos tu RFC"
-        : "Opcional · debe corresponder al negocio; de aquí extraemos tu RFC",
-      required: isPM,
+      desc: "Debe corresponder al negocio · de aquí extraemos y validamos tu RFC",
+      required: true,
       icon: "file",
     },
   ];
