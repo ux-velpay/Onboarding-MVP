@@ -27,7 +27,7 @@ function SectionTitle({ children }: { children: ReactNode }) {
 function GiroSelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-[14px] font-medium text-ink">Actividad Empresarial</span>
+      <span className="mb-2 block text-[14px] font-medium text-ink">Actividad Económica</span>
       <div className="relative">
         <select
           value={value}
@@ -37,7 +37,7 @@ function GiroSelect({ value, onChange }: { value: string; onChange: (v: string) 
           }`}
         >
           <option value="" disabled>
-            Seleccionar Actividad Empresarial
+            Seleccionar Actividad Económica
           </option>
           {GIROS.map((g) => (
             <option key={g.id} value={g.id} className="text-ink">
