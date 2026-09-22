@@ -108,6 +108,7 @@ export interface OnboardingData {
   email: string;
   phone: string;
   address: string;
+  contactName: string;
 
   // Step 4 — bank data
   bank: string;
@@ -160,6 +161,7 @@ export function emptyOnboardingData(): OnboardingData {
     email: "",
     phone: "",
     address: "",
+    contactName: "",
     bank: "",
     clabe: "",
     accountHolder: "",

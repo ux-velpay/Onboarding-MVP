@@ -11,7 +11,7 @@ export function Contact() {
 
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
   const phoneOk = /^\d{10}$/.test(data.phone.replace(/\D/g, ""));
-  const complete = emailOk && phoneOk;
+  const complete = data.contactName.trim() !== "" && emailOk && phoneOk;
 
   return (
     <AuthScreen
@@ -29,6 +29,12 @@ export function Contact() {
       </p>
 
       <div className="space-y-5">
+        <TextField
+          label="Nombre del contacto"
+          placeholder="Ana Rodríguez"
+          value={data.contactName}
+          onChange={(e) => update({ contactName: e.target.value })}
+        />
         <TextField
           label="Correo electrónico"
           type="email"
