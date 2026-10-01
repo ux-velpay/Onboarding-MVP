@@ -3,22 +3,18 @@
 import type { Screen } from "@/lib/flow";
 import { useOnboarding } from "./provider";
 import { DemoNav } from "./DemoNav";
-import { Welcome } from "./steps/Welcome";
+import { AuthEmail } from "./steps/AuthEmail";
+import { AuthOtp } from "./steps/AuthOtp";
+import { AuthPassword } from "./steps/AuthPassword";
+import { BusinessData } from "./steps/BusinessData";
+import { Activated } from "./steps/Activated";
 import { PersonType } from "./steps/PersonType";
-import { TaxData } from "./steps/TaxData";
-import { RfcError } from "./steps/RfcError";
-import { SinRfcRoute } from "./steps/SinRfcRoute";
-import { BusinessInfo } from "./steps/BusinessInfo";
-import { BankData } from "./steps/BankData";
-import { BusinessActivity } from "./steps/BusinessActivity";
-import { BlockedState } from "./steps/BlockedState";
-import { ExpectedVolume } from "./steps/ExpectedVolume";
+import { Documents } from "./steps/Documents";
+import { CrossCheck } from "./steps/CrossCheck";
+import { ConfirmData } from "./steps/ConfirmData";
+import { Business } from "./steps/Business";
+import { Contact } from "./steps/Contact";
 import { HighVolumeRedirect } from "./steps/HighVolumeRedirect";
-import { PaymentChannel } from "./steps/PaymentChannel";
-import { TnpExtraInfo } from "./steps/TnpExtraInfo";
-import { DocumentChecklist } from "./steps/DocumentChecklist";
-import { DocumentUpload } from "./steps/DocumentUpload";
-import { Complete } from "./steps/Complete";
 import {
   StatusAprobado,
   StatusEnviado,
@@ -27,22 +23,18 @@ import {
 } from "./steps/StatusScreens";
 
 const SCREENS: Record<Screen, () => React.JSX.Element> = {
-  welcome: Welcome,
+  "auth-email": AuthEmail,
+  "auth-otp": AuthOtp,
+  "auth-password": AuthPassword,
+  "business-data": BusinessData,
   "person-type": PersonType,
-  "tax-data": TaxData,
-  "rfc-error": RfcError,
-  "sin-rfc-route": SinRfcRoute,
-  "business-info": BusinessInfo,
-  "bank-data": BankData,
-  activity: BusinessActivity,
-  blocked: BlockedState,
-  volume: ExpectedVolume,
+  documents: Documents,
+  "cross-check": CrossCheck,
+  confirm: ConfirmData,
+  business: Business,
+  contact: Contact,
   "high-volume-redirect": HighVolumeRedirect,
-  channel: PaymentChannel,
-  "tnp-extra-info": TnpExtraInfo,
-  checklist: DocumentChecklist,
-  upload: DocumentUpload,
-  complete: Complete,
+  activated: Activated,
   "status-enviado": StatusEnviado,
   "status-info-adicional": StatusInfoAdicional,
   "status-aprobado": StatusAprobado,

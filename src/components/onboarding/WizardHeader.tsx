@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/cn";
-import { stepNumber, TOTAL_STEPS } from "@/lib/flow";
+import { stepNumber, totalSteps } from "@/lib/flow";
 import { ArrowLeft } from "@/components/ui/icons";
 import { StepBar } from "@/components/ui/StepBar";
 import { useOnboarding } from "./provider";
@@ -14,8 +14,9 @@ interface WizardHeaderProps {
 }
 
 export function WizardHeader({ step, rightLabel }: WizardHeaderProps) {
-  const { back, canGoBack, screen } = useOnboarding();
-  const current = step === undefined ? stepNumber(screen) : step;
+  const { back, canGoBack, screen, data } = useOnboarding();
+  const total = totalSteps(data);
+  const current = step === undefined ? stepNumber(screen, data) : step;
 
   return (
     <div>
@@ -25,7 +26,7 @@ export function WizardHeader({ step, rightLabel }: WizardHeaderProps) {
           onClick={back}
           disabled={!canGoBack}
           className={cn(
-            "focus-ring flex items-center gap-2.5 rounded-full text-[15px] font-semibold text-primary-dark transition-opacity",
+            "focus-ring flex items-center gap-2.5 rounded-full text-[15px] font-medium text-primary-dark transition-opacity",
             !canGoBack && "cursor-default opacity-40"
           )}
         >
@@ -35,12 +36,12 @@ export function WizardHeader({ step, rightLabel }: WizardHeaderProps) {
           Atrás
         </button>
         <span className="text-[14px] text-ink-3">
-          {rightLabel ?? (current ? `Paso ${current} de ${TOTAL_STEPS}` : null)}
+          {rightLabel ?? (current ? `Paso ${current} de ${total}` : null)}
         </span>
       </div>
       {current && (
         <div className="mt-4">
-          <StepBar current={current} total={TOTAL_STEPS} />
+          <StepBar current={current} total={total} />
         </div>
       )}
     </div>

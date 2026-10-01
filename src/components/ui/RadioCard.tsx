@@ -31,8 +31,8 @@ export function RadioCard({
       {Icon && (
         <span
           className={cn(
-            "flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors",
-            selected ? "bg-primary-dark text-white" : "bg-page text-ink-2"
+            "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors",
+            selected ? "bg-primary-dark text-white" : "bg-surface text-ink-3"
           )}
         >
           <Icon width={20} height={20} />

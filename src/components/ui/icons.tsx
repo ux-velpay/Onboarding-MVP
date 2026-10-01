@@ -141,6 +141,53 @@ export const BadgeCheck = (p: IconProps) => (
   </svg>
 );
 
+export const ExternalLink = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+  </svg>
+);
+
+export const Eye = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+export const EyeOff = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.5 0 10 7 10 7a13.2 13.2 0 0 1-1.67 2.44M6.1 6.1A13.3 13.3 0 0 0 2 11s3.5 7 10 7a9.1 9.1 0 0 0 4-.9" />
+    <path d="M9.9 9.9a3 3 0 1 0 4.2 4.2M2 2l20 20" />
+  </svg>
+);
+
+export const Camera = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+    <circle cx="12" cy="13" r="3" />
+  </svg>
+);
+
+export const Home = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" />
+  </svg>
+);
+
+export const Landmark = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M3 21h18M3 10h18M12 3 3 8h18l-9-5zM5 10v11M9 10v11M15 10v11M19 10v11" />
+  </svg>
+);
+
+export const IdCard = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <rect x="2" y="5" width="20" height="14" rx="2" />
+    <circle cx="8" cy="11" r="2" />
+    <path d="M14 9h4M14 13h4M5 16h6" />
+  </svg>
+);
+
 export const CreditCard = (p: IconProps) => (
   <svg {...base} {...p}>
     <rect x="2" y="5" width="20" height="14" rx="2" />

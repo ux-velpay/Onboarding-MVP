@@ -71,10 +71,26 @@ export type RfcCheck =
   | { status: "missing" };
 
 export interface OnboardingData {
+  // Account creation (pre-registration)
+  accountContact: string; // email or phone used to create the account
+
+  // Alta exprés — datos mínimos del negocio (BR-033)
+  businessEmail: string; // correo del negocio
+  businessPhone: string; // teléfono del negocio
+
+  /** Demo flag — when true the OCR "found" a discrepancy, so the
+   *  cross-validation step is inserted (out of the happy path). */
+  simulateDiscrepancy: boolean;
+
   // Step 1 — person type
   personType: PersonType | null;
   hasRfc: boolean | null;
   doesBusinessActivity: boolean | null; // PF only
+
+  // Personal / representative name (split)
+  nombres: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
 
   // Step 2 — tax data
   rfc: string;
@@ -84,11 +100,15 @@ export interface OnboardingData {
   domicilioFiscal: string;
   representanteLegal: string;
 
+  // Giro / MCC (catalog)
+  mcc: string;
+
   // Step 3 — business data
   businessName: string;
   email: string;
   phone: string;
   address: string;
+  contactName: string;
 
   // Step 4 — bank data
   bank: string;
@@ -120,6 +140,14 @@ export interface OnboardingData {
 
 export function emptyOnboardingData(): OnboardingData {
   return {
+    accountContact: "",
+    businessEmail: "",
+    businessPhone: "",
+    simulateDiscrepancy: false,
+    nombres: "",
+    apellidoPaterno: "",
+    apellidoMaterno: "",
+    mcc: "",
     personType: null,
     hasRfc: null,
     doesBusinessActivity: null,
@@ -133,6 +161,7 @@ export function emptyOnboardingData(): OnboardingData {
     email: "",
     phone: "",
     address: "",
+    contactName: "",
     bank: "",
     clabe: "",
     accountHolder: "",

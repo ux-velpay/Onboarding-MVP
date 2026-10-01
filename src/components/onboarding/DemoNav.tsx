@@ -8,29 +8,24 @@ import { useOnboarding } from "./provider";
 
 const GROUPS: { title: string; items: { id: Screen; label: string }[] }[] = [
   {
-    title: "Captura",
+    title: "Crear cuenta",
     items: [
-      { id: "welcome", label: "Bienvenida" },
-      { id: "person-type", label: "Tipo de persona" },
-      { id: "tax-data", label: "Datos fiscales" },
-      { id: "sin-rfc-route", label: "Ruta sin RFC" },
-      { id: "rfc-error", label: "Error de RFC" },
-      { id: "business-info", label: "Datos del negocio" },
-      { id: "bank-data", label: "Datos bancarios" },
-      { id: "activity", label: "Giro / actividad" },
-      { id: "blocked", label: "Giro bloqueado" },
-      { id: "volume", label: "Volumen" },
-      { id: "high-volume-redirect", label: "Redirección > $8k" },
-      { id: "channel", label: "Canal TP / TNP" },
-      { id: "tnp-extra-info", label: "Info TNP" },
+      { id: "auth-email", label: "Correo / teléfono" },
+      { id: "auth-otp", label: "Código (OTP)" },
+      { id: "auth-password", label: "Contraseña" },
+      { id: "business-data", label: "Datos del negocio" },
     ],
   },
   {
-    title: "Expediente",
+    title: "Registro",
     items: [
-      { id: "checklist", label: "Checklist" },
-      { id: "upload", label: "Carga de ID" },
-      { id: "complete", label: "Completado" },
+      { id: "person-type", label: "Tipo de persona" },
+      { id: "documents", label: "Documentos (escaneo)" },
+      { id: "cross-check", label: "Validación cruzada" },
+      { id: "confirm", label: "Confirmar datos" },
+      { id: "business", label: "Sobre tu negocio" },
+      { id: "high-volume-redirect", label: "Redirección > $8k" },
+      { id: "activated", label: "¡Felicidades! (activada)" },
     ],
   },
   {
@@ -61,7 +56,7 @@ export function DemoNav() {
       {open && (
         <div className="mb-3 max-h-[70vh] w-64 overflow-y-auto rounded-[16px] border border-line bg-white p-4 shadow-[var(--shadow-lg)]">
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-[13px] font-semibold text-ink">Vista de diseño</span>
+            <span className="text-[13px] font-medium text-ink">Vista de diseño</span>
             <button
               onClick={reset}
               className="text-[12px] font-medium text-primary hover:underline"
@@ -70,7 +65,7 @@ export function DemoNav() {
             </button>
           </div>
           <div className="mb-3">
-            <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-ink-3">
+            <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-ink-3">
               Datos de ejemplo
             </p>
             <div className="space-y-1.5">
@@ -87,7 +82,7 @@ export function DemoNav() {
           </div>
           {GROUPS.map((g) => (
             <div key={g.title} className="mb-3 last:mb-0">
-              <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-ink-3">
+              <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-ink-3">
                 {g.title}
               </p>
               <div className="space-y-0.5">

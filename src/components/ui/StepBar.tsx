@@ -9,7 +9,7 @@ export function StepBar({ current, total }: StepBarProps) {
   return (
     <div className="h-2 w-full overflow-hidden rounded-full bg-purple-100">
       <div
-        className="h-full rounded-full bg-primary-dark transition-all duration-300"
+        className="h-full rounded-full bg-primary transition-all duration-300"
         style={{ width: `${pct}%` }}
       />
     </div>

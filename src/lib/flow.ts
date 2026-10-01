@@ -1,84 +1,84 @@
-// Wizard navigation — the screen graph and the branching logic that the
-// rules engine drives (scenario, giro block, volume redirect, TNP).
+// Wizard navigation for the optimized scan-first flow.
+// The cross-validation step is NOT part of the happy path — it is only
+// inserted when the OCR found a discrepancy (data.simulateDiscrepancy).
 
-import { classifyLevel, isGiroBlocked, resolveScenario, validateRfc } from "./rules-engine";
+import { classifyLevel } from "./rules-engine";
 import type { OnboardingData } from "./types";
 
 export type Screen =
-  | "welcome"
+  | "auth-email"
+  | "auth-otp"
+  | "auth-password"
+  | "business-data"
   | "person-type"
-  | "tax-data"
-  | "rfc-error"
-  | "sin-rfc-route"
-  | "business-info"
-  | "bank-data"
-  | "activity"
-  | "blocked"
-  | "volume"
+  | "documents"
+  | "cross-check"
+  | "confirm"
+  | "business"
+  | "contact"
   | "high-volume-redirect"
-  | "channel"
-  | "tnp-extra-info"
-  | "checklist"
-  | "upload"
-  | "complete"
+  | "activated"
   | "status-enviado"
   | "status-info-adicional"
   | "status-aprobado"
   | "status-rechazado";
 
-/** Capture steps that show up as progress dots (7 total). */
-export const CAPTURE_STEPS: Screen[] = [
-  "person-type",
-  "tax-data",
-  "business-info",
-  "bank-data",
-  "activity",
-  "volume",
-  "channel",
-];
-
-export const TOTAL_STEPS = CAPTURE_STEPS.length;
-
-/** Which dot to highlight for a given screen (1-based), or null for none. */
-export function stepNumber(screen: Screen): number | null {
-  const alias: Partial<Record<Screen, Screen>> = {
-    "sin-rfc-route": "tax-data",
-    "rfc-error": "tax-data",
-    "tnp-extra-info": "channel",
-  };
-  const target = alias[screen] ?? screen;
-  const idx = CAPTURE_STEPS.indexOf(target);
-  return idx === -1 ? null : idx + 1;
+/**
+ * Six phase-level markers for the progress bar.
+ * auth-otp and auth-password are part of phase 1 (Crear cuenta).
+ * person-type is part of phase 3 (Documentos).
+ */
+export function captureSteps(_data: OnboardingData): Screen[] {
+  return [
+    "auth-email",    // Paso 1 — Crear cuenta
+    "business-data", // Paso 2 — Datos del negocio
+    "documents",     // Paso 3 — Documentos
+    "confirm",       // Paso 4 — Confirmar datos
+    "business",      // Paso 5 — Volumen de transacciones
+    "contact",       // Paso 6 — Datos de contacto
+  ];
 }
 
-/** Forward transition from `screen`, given current data. */
+export function totalSteps(data: OnboardingData): number {
+  return captureSteps(data).length;
+}
+
+export function stepNumber(screen: Screen, data: OnboardingData): number | null {
+  const steps = captureSteps(data);
+  const idx = steps.indexOf(screen);
+  if (idx !== -1) return idx + 1;
+  // Screens that belong to a phase but aren't the phase marker
+  if (screen === "auth-otp" || screen === "auth-password") return 1;
+  if (screen === "person-type" || screen === "cross-check") return 3;
+  return null;
+}
+
 export function nextScreen(screen: Screen, data: OnboardingData): Screen {
   switch (screen) {
-    case "welcome":
+    case "auth-email":
+      return "auth-otp";
+    case "auth-otp":
+      return "auth-password";
+    case "auth-password":
+      return "business-data";
+    case "business-data":
       return "person-type";
     case "person-type":
-      return data.hasRfc === false ? "sin-rfc-route" : "tax-data";
-    case "tax-data":
-      return validateRfc(data).status === "inconsistent" ? "rfc-error" : "business-info";
-    case "sin-rfc-route":
-      return "business-info";
-    case "business-info":
-      return "bank-data";
-    case "bank-data":
-      return "activity";
-    case "activity":
-      return isGiroBlocked(data.giroId) ? "blocked" : "volume";
-    case "volume":
-      return classifyLevel(data) === "FUERA_DE_RANGO" ? "high-volume-redirect" : "channel";
-    case "channel":
-      return data.channel === "TNP" ? "tnp-extra-info" : "checklist";
-    case "tnp-extra-info":
-      return "checklist";
-    case "checklist":
-      return "upload";
-    case "upload":
-      return "complete";
-    case "complete":
+      return "documents";
+    case "documents":
+      // Happy path skips cross-validation; only shown when a discrepancy exists.
+      return data.simulateDiscrepancy ? "cross-check" : "confirm";
+    case "cross-check":
+      return "confirm";
+    case "confirm":
+      return "business";
+    case "business":
+      return classifyLevel(data) === "FUERA_DE_RANGO"
+        ? "high-volume-redirect"
+        : "contact";
+    case "contact":
+      return "activated";
+    case "activated":
       return "status-enviado";
     default:
       return screen;

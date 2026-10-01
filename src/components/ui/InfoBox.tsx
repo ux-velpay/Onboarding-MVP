@@ -22,7 +22,7 @@ export function InfoBox({ title, icon: Icon, tone = "neutral", children, classNa
   return (
     <div className={cn("rounded-[12px] p-4", t.box, className)}>
       {title && (
-        <div className={cn("mb-1.5 flex items-center gap-2 text-[15px] font-semibold", t.title)}>
+        <div className={cn("mb-1.5 flex items-center gap-2 text-[15px] font-medium", t.title)}>
           {Icon && <Icon width={18} height={18} />}
           <span>{title}</span>
         </div>
