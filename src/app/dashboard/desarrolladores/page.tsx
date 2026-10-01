@@ -61,13 +61,12 @@ function LoadingOverlay() {
   );
 }
 
-// ── Shared: advance onboarding past sync-terminal before returning ─
 function goToOnboarding(router: ReturnType<typeof useRouter>) {
   try {
     const raw = localStorage.getItem("velpay-onboarding-v12");
     if (raw) {
       const state = JSON.parse(raw);
-      if (state.screen === "sync-terminal" || state.screen === "business-data") {
+      if (state.screen === "business-data") {
         state.history = [...(state.history ?? []), state.screen];
         state.screen = "person-type";
         localStorage.setItem("velpay-onboarding-v12", JSON.stringify(state));

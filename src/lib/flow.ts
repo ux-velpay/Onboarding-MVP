@@ -10,7 +10,6 @@ export type Screen =
   | "auth-otp"
   | "auth-password"
   | "business-data"
-  | "sync-terminal"
   | "person-type"
   | "documents"
   | "cross-check"
