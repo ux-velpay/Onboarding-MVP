@@ -174,43 +174,66 @@ export function Documents() {
                   {!isDone && (
                     <div className="mt-3">
                       {doc.photos ? (
-                        <button
-                          type="button"
-                          onClick={() => setScanModal({ doc })}
-                          disabled={isScanning}
-                          className="focus-ring inline-flex items-center gap-2 rounded-[9px] bg-primary-dark px-3.5 py-2 text-[13px] font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-70"
-                        >
-                          {isScanning ? <Spinner /> : <Camera width={15} height={15} />}
-                          {isScanning ? "Capturando…" : "Tomar fotos"}
-                        </button>
-                      ) : doc.twoSided ? (
                         <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setScanModal({ doc })}
+                            disabled={isScanning}
+                            className="focus-ring inline-flex items-center gap-2 rounded-[9px] bg-primary-dark px-3.5 py-2 text-[13px] font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-70"
+                          >
+                            {isScanning ? <Spinner /> : <Camera width={15} height={15} />}
+                            {isScanning ? "Capturando…" : "Tomar fotos"}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => scan(doc)}
+                            disabled={isScanning}
+                            className="focus-ring inline-flex items-center gap-2 rounded-[9px] border border-line-strong bg-white px-3.5 py-2 text-[13px] font-medium text-ink transition-colors hover:bg-page disabled:opacity-70"
+                          >
+                            <Upload width={15} height={15} />
+                            Subir archivo
+                          </button>
+                        </div>
+                      ) : doc.twoSided ? (
+                        <div className="flex flex-col gap-2">
                           {(doc.sides ?? ["Frente", "Reverso"]).map((label, i) => {
                             const k = `${doc.id}_${i}`;
                             const sideDone = done(k);
                             const sideScan = scanning[k];
                             return (
-                              <button
-                                key={label}
-                                type="button"
-                                onClick={() => setScanModal({ doc, slot: i })}
-                                disabled={sideDone || sideScan}
-                                className={cn(
-                                  "focus-ring inline-flex items-center gap-2 rounded-[9px] border px-3 py-2 text-[13px] font-medium transition-colors",
-                                  sideDone
-                                    ? "border-success/40 bg-success-bg text-success"
-                                    : "border-line-strong bg-white text-ink hover:bg-page"
+                              <div key={label} className="flex flex-wrap items-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => setScanModal({ doc, slot: i })}
+                                  disabled={sideDone || sideScan}
+                                  className={cn(
+                                    "focus-ring inline-flex items-center gap-2 rounded-[9px] border px-3 py-2 text-[13px] font-medium transition-colors",
+                                    sideDone
+                                      ? "border-success/40 bg-success-bg text-success"
+                                      : "border-line-strong bg-white text-ink hover:bg-page"
+                                  )}
+                                >
+                                  {sideScan ? (
+                                    <Spinner />
+                                  ) : sideDone ? (
+                                    <Check width={15} height={15} />
+                                  ) : (
+                                    <Camera width={15} height={15} />
+                                  )}
+                                  {label}
+                                </button>
+                                {!sideDone && (
+                                  <button
+                                    type="button"
+                                    onClick={() => scan(doc, i)}
+                                    disabled={sideScan}
+                                    className="focus-ring inline-flex items-center gap-2 rounded-[9px] border border-line-strong bg-white px-3 py-2 text-[13px] font-medium text-ink transition-colors hover:bg-page disabled:opacity-70"
+                                  >
+                                    {sideScan ? <Spinner /> : <Upload width={15} height={15} />}
+                                    Subir archivo
+                                  </button>
                                 )}
-                              >
-                                {sideScan ? (
-                                  <Spinner />
-                                ) : sideDone ? (
-                                  <Check width={15} height={15} />
-                                ) : (
-                                  <Camera width={15} height={15} />
-                                )}
-                                {label}
-                              </button>
+                              </div>
                             );
                           })}
                         </div>
@@ -244,7 +267,7 @@ export function Documents() {
                             className="focus-ring inline-flex items-center gap-2 rounded-[9px] border border-line-strong bg-white px-3.5 py-2 text-[13px] font-medium text-ink transition-colors hover:bg-page disabled:opacity-70"
                           >
                             {doc.uploadOnly && isScanning ? <Spinner /> : <Upload width={15} height={15} />}
-                            Subir
+                            Subir archivo
                           </button>
                         </div>
                       )}
