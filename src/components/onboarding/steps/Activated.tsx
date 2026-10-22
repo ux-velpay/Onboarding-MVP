@@ -41,11 +41,13 @@ export function Activated() {
 
   const handleFinalizar = () => {
     reset();
+    window.parent.postMessage('onboarding-complete', '*');
     router.push("/dashboard/desarrolladores");
   };
 
   const handleAssistant = () => {
     setLoading(true);
+    window.parent.postMessage('onboarding-complete', '*');
     setTimeout(() => router.push("/dashboard/desarrolladores"), 2000);
   };
 

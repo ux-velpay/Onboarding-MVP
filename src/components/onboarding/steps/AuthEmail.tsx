@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { TextField } from "@/components/ui/TextField";
 import { useOnboarding } from "../provider";
@@ -7,6 +8,8 @@ import { AuthScreen, AuthTitle } from "./AuthScreen";
 
 export function AuthEmail() {
   const { data, update, next } = useOnboarding();
+  const searchParams = useSearchParams();
+  const isPuntoRed = searchParams.get("portal") === "punto-red";
   const complete = data.accountContact.trim() !== "";
 
   return (
@@ -17,10 +20,12 @@ export function AuthEmail() {
           <Button variant="secondary" fullWidth disabled={!complete} onClick={next}>
             Continuar
           </Button>
-          <p className="text-[14px] text-ink-2">
-            ¿Ya estás registrado?{" "}
-            <span className="font-medium text-primary underline">Inicia sesión aquí</span>
-          </p>
+          {!isPuntoRed && (
+            <p className="text-[14px] text-ink-2">
+              ¿Ya estás registrado?{" "}
+              <span className="font-medium text-primary underline">Inicia sesión aquí</span>
+            </p>
+          )}
         </div>
       }
     >
